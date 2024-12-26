@@ -1,7 +1,11 @@
 import React from 'react';
 import { UserCircle } from 'lucide-react';
 
+import {useAuth0} from '@auth0/auth0-react';
+import Login from './login.jsx';
+import LogoutBtn from './logout.jsx';
 export default function LandingPage() {
+  const { user } = useAuth0();
   return (
     <div className="min-h-screen bg-[#0D0B1A] bg-gradient-to-br from-[#120f24] via-[#0D0B1A] to-[#1A1A2E]">
       {/* Navigation */}
@@ -14,10 +18,11 @@ export default function LandingPage() {
           />
           <span className="text-xl font-bold text-white">DSAfied</span>
         </div>
-        <div className="flex items-center space-x-4">
+        {/* <div className="flex items-center space-x-4">
           <span className="text-white">Username</span>
           <UserCircle className="h-8 w-8 text-white" />
-        </div>
+        </div> */}
+        {user? <LogoutBtn/> : <Login/>}
       </nav>
 
       {/* Hero Section */}
