@@ -1,8 +1,10 @@
 import LandingPage from "./components/Landing";
+import Treasure from "./components/Treasure";
 function App() {
   return (
     <div>
-      <LandingPage />
+      {/* <LandingPage /> */}
+      <Treasure />
     </div>
   );
 }
