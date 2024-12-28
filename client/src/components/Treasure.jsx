@@ -5,45 +5,18 @@ export default function Treasure() {
 
   // Mock data for nodes
   const nodes = [
-    {
-      id: 1,
-      title: "Optimal Partition of String",
-      x: 151,
-      y: 174,
-      r: 43,
-      locked: false,
-    },
-    {
-      id: 2,
-      title: "The kth factor of n",
-      x: 766,
-      y: 55,
-      r: 43,
-      locked: true,
-    },
+    { id: 1, title: "Optimal Partition of String", x: 151, y: 174, r: 43, locked: true},
+    { id: 2, title: "The kth factor of n", x: 766, y: 55, r: 43, locked: true },
     { id: 3, title: "Topological Sort", x: 1100, y: 545, r: 43, locked: true },
+    { id: 4, title: "Mystery question", x: 1793, y: 193, r: 43, locked: true },
   ];
 
   const shadows = [
-    {
-        id: 1,
-        x: 151,
-        y: 174,
-        r: 42.5
-    },
-    {
-        id: 2,
-        x: 766,
-        y: 55,
-        r: 42.5
-    },
-    {
-        id: 3,
-        x: 1100,
-        y: 545,
-        r: 42.5
-    }
-  ]
+    { id: 1, x: 151, y: 174, r: 42.5 },
+    { id: 2, x: 766, y: 55, r: 42.5 },
+    { id: 3, x: 1100, y: 545, r: 42.5 },
+    { id: 4, x: 1793, y: 193, r: 42.5 },
+  ];
   return (
     <div className="path-ui-container bg-[#E8A366] h-screen w-screen p-10">
       <div className="bg-[#F4DBA5] h-full w-full rounded-xl flex items-center justify-center">
@@ -59,82 +32,76 @@ export default function Treasure() {
           ></path>
 
           {nodes.map((node) => {
-            <g
-              key={node.id}
-              xmlns="http://www.w3.org/2000/svg"
-              filter="url(#filter0_d_56_14)"
-            >
-              <circle cx={node.x} cy={node.y} r={node.r} fill="#D9D9D9" strokeWidth="2"/>
-            </g>;
+            return (
+              <g key={node.id} xmlns="http://www.w3.org/2000/svg">
+                <circle cx={node.x} cy={node.y} r={node.r} fill="#D9D9D9" />
+              </g>
+            );
           })}
 
-          {/* {shadows.map((shadow) => {
-            <g
-              key={shadow.id}
-              xmlns="http://www.w3.org/2000/svg"
-              filter="url(#filter0_d_56_14)"
-            >
-              <circle cx={shadow.x} cy={shadow.y} r={shadow.r} stroke="black" />
-            </g>;
-          })} */}
-          
+          {shadows.map((shadow) => {
+            return (
+              <g key={shadow.id} xmlns="http://www.w3.org/2000/svg">
+                <circle
+                  cx={shadow.x}
+                  cy={shadow.y}
+                  r={shadow.r}
+                  stroke="black"
+                />
+              </g>
+            );
+          })}
+
           <path
             xmlns="http://www.w3.org/2000/svg"
             d="M157.877 161.626C157.877 159.802 157.153 158.053 155.863 156.764C154.574 155.474 152.825 154.75 151.001 154.75C149.177 154.75 147.428 155.474 146.139 156.764C144.849 158.053 144.125 159.802 144.125 161.626V169.877"
             stroke="black"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
           <path
             xmlns="http://www.w3.org/2000/svg"
             d="M160.625 169.874H141.375C139.097 169.874 137.25 171.721 137.25 173.999V189.124C137.25 191.402 139.097 193.249 141.375 193.249H160.625C162.903 193.249 164.75 191.402 164.75 189.124V173.999C164.75 171.721 162.903 169.874 160.625 169.874Z"
             stroke="black"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
 
-          
           <path
             xmlns="http://www.w3.org/2000/svg"
             d="M772.877 50.8767V42.7114C772.877 40.8878 772.153 39.1389 770.863 37.8494C769.574 36.5599 767.825 35.8354 766.001 35.8354C764.177 35.8354 762.428 36.5599 761.139 37.8494C759.849 39.1389 759.125 40.8878 759.125 42.7114V50.8767"
             stroke="#333333"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
           <path
             xmlns="http://www.w3.org/2000/svg"
             d="M775.625 50.8745H756.375C754.097 50.8745 752.25 52.7213 752.25 54.9995V70.1245C752.25 72.4027 754.097 74.2495 756.375 74.2495H775.625C777.904 74.2495 779.75 72.4027 779.75 70.1245V54.9995C779.75 52.7213 777.904 50.8745 775.625 50.8745Z"
             stroke="#333333"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
 
-          
           <path
             xmlns="http://www.w3.org/2000/svg"
             d="M1106.88 540.877V532.711C1106.88 530.888 1106.15 529.139 1104.86 527.849C1103.57 526.56 1101.82 525.835 1100 525.835C1098.18 525.835 1096.43 526.56 1095.14 527.849C1093.85 529.139 1093.12 530.888 1093.12 532.711V540.877"
             stroke="#333333"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
           <path
             xmlns="http://www.w3.org/2000/svg"
             d="M1109.63 540.874H1090.38C1088.1 540.874 1086.25 542.721 1086.25 544.999V560.124C1086.25 562.403 1088.1 564.249 1090.38 564.249H1109.63C1111.9 564.249 1113.75 562.403 1113.75 560.124V544.999C1113.75 542.721 1111.9 540.874 1109.63 540.874Z"
             stroke="#333333"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
-
-          <g xmlns="http://www.w3.org/2000/svg" filter="url(#filter3_d_56_14)">
-            {/* <circle cx="1793" cy="193" r="43" fill="#D9D9D9" /> */}
-            <circle cx="1793" cy="193" r="42.5" stroke="black" />
-          </g>
 
           <defs xmlns="http://www.w3.org/2000/svg">
             <filter
@@ -144,9 +111,9 @@ export default function Treasure() {
               width="109.8"
               height="109.8"
               filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
+              color-interpolation-filters="sRGB"
             >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
@@ -179,9 +146,9 @@ export default function Treasure() {
               width="109.8"
               height="109.8"
               filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
+              color-interpolation-filters="sRGB"
             >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
@@ -214,9 +181,9 @@ export default function Treasure() {
               width="109.8"
               height="109.8"
               filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
+              color-interpolation-filters="sRGB"
             >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
@@ -249,9 +216,9 @@ export default function Treasure() {
               width="109.8"
               height="109.8"
               filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
+              color-interpolation-filters="sRGB"
             >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
