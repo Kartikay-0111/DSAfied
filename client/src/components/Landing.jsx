@@ -10,36 +10,36 @@ export default function LandingPage() {
   const { user, getAccessTokenSilently, isAuthenticated } = useAuth0();
   const {getIdTokenClaims} = useAuth0();
   
-  useEffect(()=>{
-    const createUser = async () => {
-      try{
-        const token = await getAccessTokenSilently({
-          audience: 'http://localhost/',
-          scope: 'openid profile email',
-        });
+  // useEffect(()=>{
+  //   const createUser = async () => {
+  //     try{
+  //       const token = await getAccessTokenSilently({
+  //         audience: 'http://localhost/',
+  //         scope: 'openid profile email',
+  //       });
 
-        // const idToken = await getIdTokenClaims();
-        // console.log(idToken);
+  //       // const idToken = await getIdTokenClaims();
+  //       // console.log(idToken);
 
-        console.log(token);
+  //       console.log(token);
 
-        const response = await fetch('http://localhost:3000/api/users',{
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        console.log(response.data);
-      }
-      catch(e){
-        console.log(e);
-      }
-    }
-    if(user){
-      createUser();
-    }
-  }, [user]);
+  //       const response = await fetch('http://localhost:3000/api/users',{
+  //         method: 'POST',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+  //       console.log(response.data);
+  //     }
+  //     catch(e){
+  //       console.log(e);
+  //     }
+  //   }
+  //   if(user){
+  //     createUser();
+  //   }
+  // }, [user]);                        //trying to create user on login
 
   
   return (
