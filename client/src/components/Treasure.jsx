@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { motion } from "motion/react";
+// import { useInView } from "motion/react";
+import { animate, inView } from "motion";
 
 export default function Treasure() {
+  useEffect(() => {
+  inView("svg", ({ target }) => {
+    animate(
+      target.querySelectorAll("rect, text"),
+      { opacity: [0, 1], width: [0, 280] },
+      { duration: 2, easing: [0.17, 0.55, 0.55, 1] }
+    );
+  });
+}, [])
+
   const [hoveredNode, setHoveredNode] = useState(null);
 
   // Mock data for nodes
   const nodes = [
-    { id: 1, title: "Optimal Partition of String", x: 151, y: 174, r: 43, locked: true},
+    {
+      id: 1,
+      title: "Optimal Partition of String",
+      x: 151,
+      y: 174,
+      r: 43,
+      locked: true,
+    },
     { id: 2, title: "The kth factor of n", x: 766, y: 55, r: 43, locked: true },
     { id: 3, title: "Topological Sort", x: 1100, y: 545, r: 43, locked: true },
     { id: 4, title: "Mystery question", x: 1793, y: 193, r: 43, locked: true },
@@ -33,8 +53,33 @@ export default function Treasure() {
 
           {nodes.map((node) => {
             return (
-              <g key={node.id} xmlns="http://www.w3.org/2000/svg">
+              <g
+                key={node.id}
+                className="cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <circle cx={node.x} cy={node.y} r={node.r} fill="#D9D9D9" />
+
+                <rect
+                  x={node.x - 10}
+                  y={node.y + 40}
+                  width="280"
+                  height="80"
+                  rx="20"
+                  ry="20"
+                  className="fill-gray-300 stroke-black stroke-1"
+                ></rect>
+
+                <text
+                  x={node.x + 100}
+                  y={node.y + 80}
+                  textAnchor="middle"
+                  className="fill-black font-bold text-xl"
+                  
+                  style={{ fontFamily: "Arial, sans-serif", fontSize: "30" }}
+                >
+                  {node.title}
+                </text>
               </g>
             );
           })}
