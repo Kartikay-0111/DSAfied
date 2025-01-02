@@ -5,8 +5,11 @@ const userSchema = new mongoose.Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     avatar: {type: String, required:true},
-    // dsaLevel: { type: String, enum: ["Beginner", "Intermediate", "Advanced"] },
-    // createdAt: { type: Date, default: Date.now },
+    platforms: [{type: String, required: true}],
+    difficulty_pref: {type: String, required: true, enum: ["Easy", "Medium", "Hard"]},
+    problems_solved: {type: Number, required: true},
+
+    createdAt: { type: Date, default: Date.now },
 })
 
 export const User = mongoose.model('User', userSchema);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Login from './login';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -41,12 +42,13 @@ const Navbar = () => {
                             </a>
                         </nav>
                         <div className="items-center gap-2 md:flex">
-                            <a
+                            {/* <a
                                 className="items-center justify-center gap-2 btn btn-md btn-primary hidden lg:inline-flex"
                                 href="/login"
                             >
                                 Log In
-                            </a>
+                            </a> */}
+                            <Login/>
                             <a
                                 className="inline-flex items-center justify-center gap-2 btn btn-outline btn-primary"
                                 href="/login"
