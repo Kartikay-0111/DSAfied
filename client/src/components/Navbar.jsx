@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-
+import Login from './login';
+import { useAuth0 } from '@auth0/auth0-react';
+import LogoutBtn from './logout';
 const Navbar = () => {
+    const {user, isAuthenticated} = useAuth0();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     return (
         <div>
@@ -41,18 +44,26 @@ const Navbar = () => {
                             </a>
                         </nav>
                         <div className="items-center gap-2 md:flex">
-                            <a
+                            {/* <a
                                 className="items-center justify-center gap-2 btn btn-md btn-primary hidden lg:inline-flex"
                                 href="/login"
                             >
                                 Log In
-                            </a>
+                            </a> */}
+                            {!isAuthenticated? (
+                            <>
+                            <Login/>
                             <a
                                 className="inline-flex items-center justify-center gap-2 btn btn-outline btn-primary"
                                 href="/login"
                             >
                                 Get Started
                             </a>
+                            </>):(
+                            <>
+                            <h3 className="text-pink">{user.name}</h3>
+                            <LogoutBtn/>
+                            </>)}
                         </div>
                         {/* Mobile Menu Toggle */}
                         <button

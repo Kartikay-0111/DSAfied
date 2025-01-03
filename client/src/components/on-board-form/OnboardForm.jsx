@@ -1,215 +1,37 @@
 import "./on-board-form.css";
 import React, { useState } from "react";
-import { SplitText } from "../SplitText";
+import Form1 from "./form1";
+import Form2 from "./form2";
+import Form3 from "./form3";
 
-const Form1 = ({ form1CB }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const submitUsername = (e) => {
-    const username = e.target.value;
-    // console.log(e.target.value);
-    form1CB({ username });
-  };
-  const submitName = (e) => {
-    const name = e.target.value;
-    // console.log(e.target.value);
-    form1CB({ name });
-  };
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-    console.log(selectedImage);
-  };
-
-  return (
-    <div>
-      <div className="px-10 py-10 flex justify-between items-end  text-white">
-        <SplitText
-          text="Get Started"
-          className="text-2xl font-bold leading-7"
-          delay={10}
-        />
-      </div>
-      <div className="flex justify-center items-center flex-col gap-4 px-4">
-        <div
-          className="my-3 mx-4 flex gap-3 bg-[#010A14] px-3 py-1  w-full"
-          style={{ borderRadius: "5px", border: "1px solid #A8A8A8" }}
-        >
-          <img src="./user.svg" className="" />
-          <input
-            type="text"
-            placeholder="Enter your username"
-            className="text-base w-full bg-transparent focus:outline-none text-white"
-            onBlur={submitUsername}
-          />
-        </div>
-        <div
-          className="my-3 mx-4 flex gap-3 bg-[#010A14] px-3 py-1  w-full"
-          style={{ borderRadius: "5px", border: "1px solid #A8A8A8" }}
-        >
-          <img src="./name-icon.png" className="md:w-8 w-6" />
-          <input
-            type="text"
-            placeholder="Enter your name"
-            className="text-base w-3/4 bg-transparent focus:outline-none text-white"
-            onBlur={submitName}
-          />
-        </div>
-        <p className="text-[hsl(0,0%,70%)] self-start">Edit your avatar</p>
-        <div
-          className="mb-3 mx-4 flex justify-between items-center gap-4 bg-[#010A14] px-3 py-2  w-full "
-          style={{ borderRadius: "5px", border: "1px solid #A8A8A8" }}
-        >
-          {/* <img src="./dummy_user_template.png" /> */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            id="avatar-upload"
-          />
-          <label htmlFor="avatar-upload" className="cursor-pointer">
-            {selectedImage ? (
-              <img
-                src={selectedImage}
-                alt="Selected Avatar"
-                className="w-12 h-12 bg-[hsl(212,90%,8%)] rounded-full object-cover"
-              />
-            ) : (
-              <img
-                src="./dummy_user_template.png"
-                alt="Default Avatar"
-                className="w-12 h-12 bg-[hsl(212,90%,8%)] rounded-full object-cover"
-              />
-            )}
-          </label>
-          {/* <p className="text-white opacity-50 flex-1">Edit your avatar</p> */}
-        </div>
-      </div>
-    </div>
-  );
-};
-const Form2 = () => {
-  const username = "tan4585";
-  const platforms = [
-    { name: "Leetcode", logo: "leetcode-logo.png" },
-    { name: "Geeks for geeks", logo: "gfg-logo.png" },
-    { name: "Codechef", logo: "codechef-logo.svg" },
-    { name: "Codeforces", logo: "codeforces-logo.png" },
-  ];
-  return (
-    <div>
-      <div className="px-10 py-10 flex gap-3 justify-between items-center  text-white">
-        <div>
-          <SplitText
-            text="Other"
-            className="text-base md:text-2xl font-bold leading-7 mx-2"
-            delay={10}
-          />
-          <SplitText
-            text="Platforms"
-            className="text-base md:text-2xl font-bold leading-7"
-            delay={10}
-          />
-        </div>
-        <p className="text-sm md:text-base opacity-50">{username}</p>
-      </div>
-      {platforms.map((platform, index) => (
-        <div className="flex justify-center items-center flex-col gap-4 px-4">
-          <div
-            className="my-3 mx-4 flex gap-3 bg-[#010A14] px-3 py-1  w-full"
-            style={{ borderRadius: "5px", border: "1px solid #A8A8A8" }}
-          >
-            <img src={platform.logo} className="" />
-            <input
-              type="text"
-              placeholder={platform.name}
-              className="w-3/4 bg-transparent focus:outline-none text-white"
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-const Form3 = () => {
-  const username = "tan4585";
-  const [selectedDiff, setSelectedDiff] = useState(null);
-  const difficulties = [
-    {
-      level: "Easy",
-    },
-    { level: "Medium" },
-    {
-      level: "Hard",
-    },
-  ];
-
-  return (
-    <div>
-      <div className="px-10 py-10 flex justify-between items-center  text-white">
-        <div>
-          <SplitText
-            text="Difficulty "
-            className="text-base md:text-2xl font-bold leading-7 mx-2"
-            delay={10}
-          />
-          <SplitText
-            text="Preference"
-            className="text-base md:text-2xl font-bold leading-7"
-            delay={10}
-          />
-        </div>
-        <p className="text-sm md:text-base opacity-50">{username}</p>
-      </div>
-      <h2 className="text-white text-center w-full opacity-80 px-8">
-        What difficulty level questions are you comfortable with?
-      </h2>
-
-      <div className="flex justify-center my-4 gap-2">
-        {difficulties.map((difficulty, index) => (
-          <div
-            onClick={() => {
-              setSelectedDiff(index);
-            }}
-            key={index}
-            className={`cursor-pointer opacity-80 rounded-lg px-5 py-2 transition-all  ${
-              selectedDiff != index && "hover:bg-[#171e41]"
-            } ${
-              selectedDiff === index
-                ? "bg-[#67BBFF] text-black"
-                : "bg-[#010A14] text-white"
-            } `}
-            style={{ border: "1px solid #A8A8A8" }}
-          >
-            {difficulty.level}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const OnboardForm = () => {
-  const [formData, setFormData] = useState({ username: "", name: "" });
-
-  const form1CB = (data) => {
-    // console.log(data);
-    setFormData((prevData) => ({ ...prevData, ...data }));
-  };
-  console.log("formData = ", formData);
-
-  const forms = [<Form1 form1CB={form1CB} />, <Form2 />, <Form3 />];
-
+  
   const [activeFormIndex, setActiveFormIndex] = useState(0);
+
+  const [formData, setFormData] = useState({
+    form1: {},
+    form2: {},
+    form3: {},
+  })
+
+  const updateFormData = (formKey, data) => {
+    setFormData((prev) => ({
+      ...prev,
+      [formKey]: data,
+    }));
+  };
+
   const navigateTo = (index) => {
     setActiveFormIndex(index);
   };
+
+  const forms = [ 
+    <Form1 formData={formData.form1} setFormData={(data)=> updateFormData("form1", data)}/>,  //passing the formdata state & a new func to get formdata
+    <Form2 formData={formData.form2} setFormData={(data)=> updateFormData("form2", data)}/>,
+    <Form3 formData={formData.form3} setFormData={(data)=> updateFormData("form3", data)}/>,
+  ]
+
   return (
     <div
       className="h-screen w-full flex justify-center items-center"
@@ -278,6 +100,7 @@ const OnboardForm = () => {
                 onClick={() => navigateTo(index)}
               ></div>
             ))}
+            {console.log(formData)}
           </div>
         </div>
         {
