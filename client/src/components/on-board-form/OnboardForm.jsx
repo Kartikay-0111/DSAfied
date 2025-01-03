@@ -2,11 +2,19 @@ import "./on-board-form.css";
 import React, { useState } from "react";
 import { SplitText } from "../SplitText";
 
-
-
-const Form1 = () => {
+const Form1 = ({ form1CB }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const submitUsername = (e) => {
+    const username = e.target.value;
+    // console.log(e.target.value);
+    form1CB({ username });
+  };
+  const submitName = (e) => {
+    const name = e.target.value;
+    // console.log(e.target.value);
+    form1CB({ name });
+  };
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -17,13 +25,16 @@ const Form1 = () => {
       reader.readAsDataURL(file);
     }
     console.log(selectedImage);
-    
   };
 
   return (
     <div>
       <div className="px-10 py-10 flex justify-between items-end  text-white">
-        <SplitText text="Get Started" className="text-2xl font-bold leading-7" delay={10} />
+        <SplitText
+          text="Get Started"
+          className="text-2xl font-bold leading-7"
+          delay={10}
+        />
       </div>
       <div className="flex justify-center items-center flex-col gap-4 px-4">
         <div
@@ -35,6 +46,7 @@ const Form1 = () => {
             type="text"
             placeholder="Enter your username"
             className="text-base w-full bg-transparent focus:outline-none text-white"
+            onBlur={submitUsername}
           />
         </div>
         <div
@@ -46,6 +58,7 @@ const Form1 = () => {
             type="text"
             placeholder="Enter your name"
             className="text-base w-3/4 bg-transparent focus:outline-none text-white"
+            onBlur={submitName}
           />
         </div>
         <p className="text-[hsl(0,0%,70%)] self-start">Edit your avatar</p>
@@ -91,8 +104,19 @@ const Form2 = () => {
   ];
   return (
     <div>
-      <div className="px-10 py-10 flex gap-3 justify-between items-end  text-white">
-        <SplitText text="Other Platforms" className="text-base md:text-2xl font-bold leading-7" delay={10} />
+      <div className="px-10 py-10 flex gap-3 justify-between items-center  text-white">
+        <div>
+          <SplitText
+            text="Other"
+            className="text-base md:text-2xl font-bold leading-7 mx-2"
+            delay={10}
+          />
+          <SplitText
+            text="Platforms"
+            className="text-base md:text-2xl font-bold leading-7"
+            delay={10}
+          />
+        </div>
         <p className="text-sm md:text-base opacity-50">{username}</p>
       </div>
       {platforms.map((platform, index) => (
@@ -115,21 +139,32 @@ const Form2 = () => {
 };
 const Form3 = () => {
   const username = "tan4585";
+  const [selectedDiff, setSelectedDiff] = useState(null);
   const difficulties = [
     {
       level: "Easy",
-      isSelected: false,
     },
-    { level: "Medium", isSelected: false },
+    { level: "Medium" },
     {
       level: "Hard",
-      isSelected: false,
     },
   ];
+
   return (
     <div>
-      <div className="px-10 py-10 flex justify-between items-end  text-white">
-        <SplitText text="Difficulty preference" className="text-base md:text-2xl font-bold leading-7" delay={10} />
+      <div className="px-10 py-10 flex justify-between items-center  text-white">
+        <div>
+          <SplitText
+            text="Difficulty "
+            className="text-base md:text-2xl font-bold leading-7 mx-2"
+            delay={10}
+          />
+          <SplitText
+            text="Preference"
+            className="text-base md:text-2xl font-bold leading-7"
+            delay={10}
+          />
+        </div>
         <p className="text-sm md:text-base opacity-50">{username}</p>
       </div>
       <h2 className="text-white text-center w-full opacity-80 px-8">
@@ -139,9 +174,16 @@ const Form3 = () => {
       <div className="flex justify-center my-4 gap-2">
         {difficulties.map((difficulty, index) => (
           <div
-            onClick={() => (difficulty.isSelected = true)}
-            className={`text-white opacity-80 rounded-lg px-5 py-2  hover:bg-[#171e41] ${
-              difficulty.isSelected ? "bg-[#67BBFF]" : "bg-[#010A14]"
+            onClick={() => {
+              setSelectedDiff(index);
+            }}
+            key={index}
+            className={`cursor-pointer opacity-80 rounded-lg px-5 py-2 transition-all  ${
+              selectedDiff != index && "hover:bg-[#171e41]"
+            } ${
+              selectedDiff === index
+                ? "bg-[#67BBFF] text-black"
+                : "bg-[#010A14] text-white"
             } `}
             style={{ border: "1px solid #A8A8A8" }}
           >
@@ -153,10 +195,18 @@ const Form3 = () => {
   );
 };
 
-const forms = [<Form1 />, <Form2 />, <Form3 />];
-
 const OnboardForm = () => {
-  const [activeFormIndex, setActiveFormIndex] = useState(2);
+  const [formData, setFormData] = useState({ username: "", name: "" });
+
+  const form1CB = (data) => {
+    // console.log(data);
+    setFormData((prevData) => ({ ...prevData, ...data }));
+  };
+  console.log("formData = ", formData);
+
+  const forms = [<Form1 form1CB={form1CB} />, <Form2 />, <Form3 />];
+
+  const [activeFormIndex, setActiveFormIndex] = useState(0);
   const navigateTo = (index) => {
     setActiveFormIndex(index);
   };
@@ -215,12 +265,13 @@ const OnboardForm = () => {
           }}
         ></div>
 
-        <div className="main-form-container flex flex-col items-center">
+        <div className="flex flex-col items-center">
           {forms[activeFormIndex]}
           {/* carousel */}
           <div className="bg-[#BFBFBF70] h-2 flex items-center justify-center gap-2 px-3 py-4 rounded-full mt-4 mb-10">
             {forms.map((_, index) => (
               <div
+                key={index}
                 className={`bg-black w-3 h-3 cursor-pointer rounded-full transition-opacity duration-500 ${
                   activeFormIndex === index ? "" : "opacity-30"
                 }`}
@@ -229,6 +280,18 @@ const OnboardForm = () => {
             ))}
           </div>
         </div>
+        {
+          activeFormIndex === 2 &&
+          <div
+            className="cursor-pointer text-white w-full text-xl py-4 flex items-center justify-center form-submit-btn"
+            style={{
+              borderRadius: "0 0 30px 30px",
+              boxShadow: "0px 2px 15px 0px rgba(96, 128, 255, 0.40)",
+            }}
+          >
+            Submit
+          </div>
+        }
       </div>
     </div>
   );

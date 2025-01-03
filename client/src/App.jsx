@@ -1,8 +1,10 @@
 import LandingPage from "./components/Landing";
+import OnboardForm from "./components/on-board-form/OnboardForm";
 function App() {
   return (
     <div>
-      <LandingPage />
+      {/* <LandingPage /> */}
+      <OnboardForm />
     </div>
   );
 }
