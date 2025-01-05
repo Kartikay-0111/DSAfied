@@ -39,6 +39,7 @@ const Form1 = ({formData, setFormData}) => {
           <input
             type="text"
             name="username"
+            value= {formData.username || ''}
             placeholder="Enter your username"
             onChange={handleInputChange}
             className="text-base w-full bg-transparent focus:outline-none text-white"
@@ -53,6 +54,7 @@ const Form1 = ({formData, setFormData}) => {
             type="text"
             name="Name"
             placeholder="Enter your name"
+            value={formData.Name || ''}
             onChange={handleInputChange}
             className="text-base w-3/4 bg-transparent focus:outline-none text-white"
           />

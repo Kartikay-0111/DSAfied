@@ -27,7 +27,7 @@ const Form2 = ({formData, setFormData}) => {
           <p className="text-sm md:text-base opacity-50">{username}</p>
         </div>
         {platforms.map((platform, index) => (
-          <div className="flex justify-center items-center flex-col gap-4 px-4">
+          <div className="flex justify-center items-center flex-col gap-4 px-4" key={index}>
             <div
               className="my-3 mx-4 flex gap-3 bg-[#010A14] px-3 py-1  w-full"
               style={{ borderRadius: "5px", border: "1px solid #A8A8A8" }}
@@ -36,6 +36,7 @@ const Form2 = ({formData, setFormData}) => {
               <input
                 type="text"
                 name = {platform.name}
+                value={formData[platform.name] || ''}
                 placeholder={platform.name}
                 onChange={handleInputChange}
                 className="w-3/4 bg-transparent focus:outline-none text-white"

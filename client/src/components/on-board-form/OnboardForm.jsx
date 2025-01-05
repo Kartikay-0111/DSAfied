@@ -1,19 +1,37 @@
 import "./on-board-form.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Form1 from "./form1";
 import Form2 from "./form2";
 import Form3 from "./form3";
+import { useAuth0 } from "@auth0/auth0-react";
+import {useNavigate} from "react-router-dom";
 
 
 const OnboardForm = () => {
-  
+  const {user, getAccessTokenSilently} = useAuth0();
   const [activeFormIndex, setActiveFormIndex] = useState(0);
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    form1: {},
-    form2: {},
-    form3: {},
+    form1: {
+      username: user?.name || "",
+      Name: "",
+      avatar: null,
+    }, 
+    form2: {
+      Leetcode: "",
+      "Geeks for geeks": "",
+      Codechef: "",
+      Codeforces: ""
+    },
+    form3: {
+      difficulty:"",
+    },
   })
+  
+  // useEffect(()=>{
+  //   console.log("form data updated:",formData)
+  // },[formData]);
 
   const updateFormData = (formKey, data) => {
     setFormData((prev) => ({
@@ -25,6 +43,61 @@ const OnboardForm = () => {
   const navigateTo = (index) => {
     setActiveFormIndex(index);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+        alert("You must login first")
+        return
+    }
+    if (!formData.form1.username || !formData.form1.Name || !formData.form2.Leetcode || !formData.form2["Geeks for geeks"] || !formData.form2.Codechef || !formData.form2.Codeforces || !formData.form3.difficulty) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    const userFormData = {...formData.form1, platform: JSON.stringify(formData.form2), ...formData.form3};
+    //convrt the platform object to string(form2)   to retrieve in bknd use parse
+    const data = new FormData();
+    for (const key in userFormData) {
+      if(userFormData.hasOwnProperty(key))
+        data.append(key, userFormData[key]); // Append each form field to the FormData object
+    }
+
+    for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+    console.log(userFormData);
+  
+    try{
+      const token = await getAccessTokenSilently({
+        audience: 'http://localhost/',
+        scope: 'openid profile email',
+      });
+      console.log(token);
+      const response = await axios.post("http://localhost:3000/api/users", data, 
+      {
+        headers: { 
+          Authorization: `Bearer ${token}`,
+      }
+      })
+      console.log(response);
+
+      if(response.status === 200){
+        setFormData({
+          form1: {},
+          form2: {},
+          form3: {},
+        });
+        setActiveFormIndex(0);
+        alert("Form submitted successfully");
+        navigate("/"); //redirect to home page
+      }
+    }
+    catch(error){
+      console.log(error.message)
+    }
+
+  } 
 
   const forms = [ 
     <Form1 formData={formData.form1} setFormData={(data)=> updateFormData("form1", data)}/>,  //passing the formdata state & a new func to get formdata
@@ -100,7 +173,6 @@ const OnboardForm = () => {
                 onClick={() => navigateTo(index)}
               ></div>
             ))}
-            {console.log(formData)}
           </div>
         </div>
         {
@@ -111,6 +183,7 @@ const OnboardForm = () => {
               borderRadius: "0 0 30px 30px",
               boxShadow: "0px 2px 15px 0px rgba(96, 128, 255, 0.40)",
             }}
+            onClick={handleSubmit}
           >
             Submit
           </div>

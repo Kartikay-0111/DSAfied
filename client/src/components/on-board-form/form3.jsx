@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { SplitText } from "../SplitText";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Form3 = () => {
+const Form3 = ({formData, setFormData}) => {
+
   const username = "tan4585";
   const [selectedDiff, setSelectedDiff] = useState(null);
   const difficulties = [
@@ -31,6 +32,7 @@ const Form3 = () => {
           <div
             onClick={() => {
               setSelectedDiff(index);
+              setFormData({difficulty: difficulty.level});
             }}
             key={index}
             className={`cursor-pointer opacity-80 rounded-lg px-5 py-2 transition-all  ${

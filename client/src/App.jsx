@@ -1,10 +1,21 @@
 import LandingPage from "./components/Landing";
 import OnboardForm from "./components/on-board-form/OnboardForm";
+import {RouterProvider,createBrowserRouter, createRoutesFromElements, Route} from "react-router-dom";
 function App() {
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+      <Route path="/" index element={<LandingPage />} />
+      <Route path='/onboard' element={<OnboardForm />} />
+      </>
+    )
+  );
   return (
-    <div>
+    <div className="App">
       {/* <LandingPage /> */}
-      <OnboardForm />
+      {/* <OnboardForm /> */}
+      <RouterProvider router={router} />
     </div>
   );
 }
