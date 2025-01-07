@@ -50,7 +50,7 @@ const OnboardForm = () => {
         alert("You must login first")
         return
     }
-    if (!formData.form1.username || !formData.form1.Name || !formData.form2.Leetcode || !formData.form2["Geeks for geeks"] || !formData.form2.Codechef || !formData.form2.Codeforces || !formData.form3.difficulty) {
+    if (!formData.form1.username || !formData.form1.Name || !formData.form1.avatar || !formData.form2.Leetcode || !formData.form2["Geeks for geeks"] || !formData.form2.Codechef || !formData.form2.Codeforces || !formData.form3.difficulty) {
         alert("Please fill in all required fields.");
         return;
     }
@@ -82,11 +82,22 @@ const OnboardForm = () => {
       })
       console.log(response);
 
-      if(response.status === 200){
+      if(response.status === 200 || response.status === 201){
         setFormData({
-          form1: {},
-          form2: {},
-          form3: {},
+          form1: {
+            username: user?.name || "",
+            Name: "",
+            avatar: null,
+          }, 
+          form2: {
+            Leetcode: "",
+            "Geeks for geeks": "",
+            Codechef: "",
+            Codeforces: ""
+          },
+          form3: {
+            difficulty:"",
+          },
         });
         setActiveFormIndex(0);
         alert("Form submitted successfully");

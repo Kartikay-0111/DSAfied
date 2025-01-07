@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser } from '../controllers/user.controller.js';
+import { createUser,checkUser } from '../controllers/user.controller.js';
 import multer from 'multer';
 const router = Router();
 
@@ -10,4 +10,5 @@ router.get('/', (req, res) => {
 });
 router.post('/', upload.single("avatar"), createUser);
 
+router.post('/check-user', checkUser);
 export default router;

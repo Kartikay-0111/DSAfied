@@ -17,7 +17,6 @@ const createUser = async (req, res) => {
     if (!req.auth || !req.auth.payload) {
       return res.status(400).json({ message: "User not authenticated" });
     }
-    console.log(req.auth.payload);
     const {sub} = req.auth.payload;
 
     // const avatar = req.auth.payload.picture;
@@ -52,6 +51,7 @@ const createUser = async (req, res) => {
     if(existingUser){
         return res.status(409).json({ 
             message: "User already exists",
+            user: existingUser,
         });
     }
 
@@ -73,4 +73,13 @@ const createUser = async (req, res) => {
   }
 }
 
-export { createUser };
+const checkUser = async (req, res) => {
+  const {sub} = req.auth.payload;
+  const user = await User.findOne({ auth0Id:sub });
+  if(user){
+    return res.json({message: "User already exists", user});
+  }
+  return res.json({message: "User not found"});
+
+}
+export { createUser, checkUser };
