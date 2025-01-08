@@ -1,3 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  font-family: "Lexend", sans-serif;
+}
+
+
+.form-submit-btn {
+  --btn-color: linear-gradient(
+    90deg,
+    #113be1 0%,
+    #4268ff 58%,
+    #4062e3 72.41%,
+    #113be1 100%
+  );
+
+
+  background: var(--btn-color);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.form-submit-btn::before,
+.form-submit-btn::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #050c29;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.form-submit-btn::after {
+  transform: translateY(100%);
+}
+
+.form-submit-btn:hover {
+  color: #e8f5e9;
+}
+
+.form-submit-btn:hover::before {
+  transform: translateY(-50%);
+}
+
+.form-submit-btn:hover::after {
+  transform: translateY(50%);
+}

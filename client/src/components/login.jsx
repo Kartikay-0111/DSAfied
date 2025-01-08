@@ -1,10 +1,15 @@
 import React from "react";
-import {useAuth0} from "@auth0/auth0-react";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
+import { get } from "mongoose";
+
 
 const Login = () =>{
-    const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect } = useAuth0();    
+
     return (
-        <button className="bg-white text-black hover:bg-gray-200 px-4 py-2 text-lg rounded" onClick={(e) => loginWithRedirect()}>Login</button>
+        <button className="items-center justify-center gap-2 btn btn-md btn-primary hidden lg:inline-flex" onClick={(e) => loginWithRedirect()}>Login</button>
     )
 }
 

@@ -19,10 +19,10 @@ app.use(cors({
   allowedHeaders: ['Authorization', 'Content-Type']  // Allow Authorization header
   
 }));
-app.use(express.urlencoded({ extended: true }));
 
-// Routes
+app.use(express.urlencoded({ extended: true }));
 app.use(jwtCheck);
+// Routes
 
 app.use('/api/users', router);
 
