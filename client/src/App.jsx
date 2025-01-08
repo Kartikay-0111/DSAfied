@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import PlatformCard from './components/PlatformCard';
+import Heatmap from './components/Heatmap';
 
 function App() {
   // Placeholder data for each platform
@@ -36,10 +37,13 @@ function App() {
   ];
 
   return (
+    <div>
+      <Heatmap />
     <div className="platforms-container">
       {platforms.map((platform, index) => (
         <PlatformCard key={index} platform={platform} />
       ))}
+    </div>
     </div>
   );
 }
