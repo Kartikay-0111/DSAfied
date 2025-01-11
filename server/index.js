@@ -22,9 +22,30 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use(jwtCheck);
 
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+
+app.post('/graphql', async (req, res) => {
+  const response = await fetch('https://leetcode.com/graphql/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req.body),
+  });
+
+  const data = await response.json();
+  res.send(data);
+});
+
+
+app.use(jwtCheck);
 app.use('/api/users', router);
+
+
+
+
 
 // Start Server
 try{
