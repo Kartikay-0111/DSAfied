@@ -5,7 +5,8 @@ body {
     color: #E0E0E0; /* Light text color */
     margin: 0;
     padding: 0;
-    height: 100vh; /* Full viewport height */
+    min-height: 100vh;
+    height: 100%; /* Full viewport height */
     display: flex;
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
