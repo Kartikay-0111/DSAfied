@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import UserProfile from './components/UserProfile';
-import PlatformCard from './components/PlatformCard';
-import RatingChart from './components/RatingChart';
+import UserProfile from './components/Profile/UserProfile';
+import PlatformCard from './components/Profile/PlatformCard';
+import RatingChart from './components/Profile/RatingChart';
 
 function App() {
   // Placeholder data for each platform
