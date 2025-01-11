@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import UserProfile from './components/UserProfile';
 import PlatformCard from './components/PlatformCard';
 import RatingChart from './components/RatingChart';
 
@@ -36,9 +37,16 @@ function App() {
     },
   ];
 
+  const user = {
+    pfp: 'https://avatars.githubusercontent.com/u/71320858?v=4',
+    name: 'Tanish Bhamare',
+    username: 'Tanish2207',
+  };
+
   return (
     <div>
-      <RatingChart />
+      <UserProfile user={user} />
+      <RatingChart /> 
       <div className="platforms-container">
         {platforms.map((platform, index) => (
           <PlatformCard key={index} platform={platform} />
