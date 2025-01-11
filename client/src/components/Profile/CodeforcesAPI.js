@@ -15,23 +15,22 @@ export const fetchCodeforcesData = async (username) => {
     }
   };
   
-  export const prepareChartData = (ratingHistory, username) => ({
-    title: `${username}'s Rating Progress`,
-    labels: ratingHistory.map(entry => formatDate(entry.ratingUpdateTimeSeconds)),
-    datasets: [
-      {
-        label: 'Rating',
-        data: ratingHistory.map(entry => entry.newRating),
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderWidth: 2,
-        tension: 0.4,
-      },
-    ],
-  });
-  
-  export const formatDate = (timestamp) => {
-    const date = new Date(timestamp * 1000);
-    return date.toLocaleDateString();
-  };
-  
+export const prepareChartData = (ratingHistory, username) => ({
+  title: `${username}'s Rating Progress`,
+  labels: ratingHistory.map(entry => formatDate(entry.ratingUpdateTimeSeconds)),
+  datasets: [
+    {
+      label: 'Rating',
+      data: ratingHistory.map(entry => entry.newRating),
+      borderColor: 'rgba(75, 192, 192, 1)',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderWidth: 2,
+      tension: 0.4,
+    },
+  ],
+});
+
+export const formatDate = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+  return date.toLocaleDateString();
+};
