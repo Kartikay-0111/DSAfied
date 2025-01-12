@@ -101,7 +101,7 @@ const OnboardForm = () => {
         });
         setActiveFormIndex(0);
         alert("Form submitted successfully");
-        navigate("/"); //redirect to home page
+        navigate("/potd"); //redirect to home page
       }
     }
     catch(error){

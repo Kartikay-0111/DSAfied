@@ -49,10 +49,9 @@ const Landing = () => {
   }, []);
   return (
     <div className="flex min-h-screen flex-col" >
-      {/* Header */}
-      <header className="sticky top-0 z-50">
+      {/* <header className="sticky top-0 z-50">
         <Navbar />
-      </header>
+      </header> */}
 
       <main className='flex-1'>
         <section className='relative py-16 pt-28 sm:pb-16 bg-gradient-to-b from-black from-20% via-indigo-900 to-black' >
@@ -161,9 +160,9 @@ const Landing = () => {
             <FAQ />
           </div>
         </section>
-        <div>
+        {/* <div>
           <Footer />
-        </div>
+        </div> */}
       </main>
     </div>
   );
