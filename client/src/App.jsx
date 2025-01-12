@@ -3,32 +3,33 @@ import "./App.css";
 import UserProfile from "./components/Profile/UserProfile";
 import PlatformCard from "./components/Profile/PlatformCard";
 import RatingChart from "./components/Profile/RatingChart";
-import { fetchLCSolvedQuestions, fetchLCRating } from "./api/rest/lc_data";
+import { LEETCODE_SUBM, LEETCODE_TOTAL_QUES } from "./api/graphql/queries/lc_user_data";
+import { fetchLCData } from "./api/rest/lc_data";
 
 function App() {
-  const [lcSolvedQuestions, setLCSolvedQuestions] = useState([])
-  const [lcRating, setLCRating] = useState(0)
+  const [lcSolvedQuestions, setLCSolvedQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchLCData = async () => {
-      try {
-        let probSolvedData = await fetchLCSolvedQuestions(); 
-        let ratingData = await fetchLCRating();
-        console.log(probSolvedData);
-        console.log(ratingData);
-        
-        setLCSolvedQuestions(probSolvedData);
-        setLCRating(ratingData)
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchLCData();
-  }, []); 
+    async function getData() {
+    try {
+      const query = LEETCODE_TOTAL_QUES;
+      console.log(query);
+
+      const variables = { userSlug: "Tan4585"};
+      const probSolvedData = await fetchLCData(query, variables);
+      console.log(probSolvedData);
+
+      setLCSolvedQuestions(probSolvedData);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  }
+  getData()
+  }, []);
   // ---------------------------------------------------------------------------
   // Placeholder data for each platform
   const platforms = [
@@ -37,7 +38,7 @@ function App() {
       logo: "https://upload.wikimedia.org/wikipedia/commons/8/8e/LeetCode_Logo_1.png",
       username: "johndoe123",
       rating: "1234",
-      solved: lcSolvedQuestions.solvedProblem
+      solved: lcSolvedQuestions.solvedProblem,
     },
     {
       name: "CodeChef",

@@ -1,20 +1,21 @@
-// api.js
-export const fetchLCSolvedQuestions = async () => {
-    try {
-      const response = await fetch('https://alfa-leetcode-api.onrender.com/tan4585/solved');
-      const data = await response.json();
-      return data; // Return the fetched data
-    } catch (error) {
-      throw new Error(error.message); // Catch any error and rethrow it
+export const fetchLCData = async (query, variables) => {
+  try {
+    const res = await fetch(`/api/profile/${variables.userSlug}`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({query, variables}),
+    })
+
+    if(!res.ok){
+      throw new Error('Network res was not ok')
     }
-  };
-  
-export const fetchLCRating = async () => {
-    try {
-        const response = await fetch('https://alfa-leetcode-api.onrender.com/tan4585/contest')
-        const data = await response.json();
-        return data
-    } catch (error) {
-        throw new Error(error.message)
-    }
+
+    const data = await res.json()
+    return data;
+  } catch (error) {
+    console.log('Error fetching leetcode profile data: ', error);
+    throw error
+  }
 }

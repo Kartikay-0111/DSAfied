@@ -1,6 +1,4 @@
-import { gql } from "@apollo/client";
-
-export const GET_LC_DATA = gql`
+export const LEETCODE_SUBM = `
   query recentAcSubmissions($username: String!, $limit: Int!) {
     recentAcSubmissionList(username: $username, limit: $limit) {
       id
@@ -8,5 +6,16 @@ export const GET_LC_DATA = gql`
       titleSlug
       timestamp
     }
+  } 
+`;
+
+export const LEETCODE_TOTAL_QUES = `
+    query userProfileUserQuestionProgressV2($userSlug: String!) {
+  userProfileUserQuestionProgressV2(userSlug: $userSlug) {
+    numAcceptedQuestions {
+      count
+      difficulty
+    }
   }
+}
 `;
