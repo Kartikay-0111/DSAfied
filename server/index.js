@@ -28,12 +28,12 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.post("/api/profile/:username", async (req, res) => {
+app.post("/api/profile/lc/:username", async (req, res) => {
   try {
     const uname = req.params["username"];
     const { query, variables } = req.body;
     variables.username = uname;
-    variables.userSlug = uname
+    variables.userSlug = uname;
 
     const response = await fetch("https://leetcode.com/graphql", {
       method: "POST",
@@ -52,6 +52,26 @@ app.post("/api/profile/:username", async (req, res) => {
   } catch (error) {
     console.error("Error fetching data from LeetCode:", error.message);
     res.status(500).json({ error: "Failed to fetch data from LeetCode" });
+  }
+});
+
+app.get("/api/profile/gfg/:username", async (req, res) => {
+  const gfg_username = req.params["username"];
+  try {
+    const response = await fetch(
+      `https://www.geeksforgeeks.org/gfg-assets/_next/data/Yo5jqcbFTIcCKClWRDMnD/user/${gfg_username}.json`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from GeeksForGeeks:", error.message);
+    res.status(500).json({ error: "Failed to fetch data from GeeksForGeeks" });
   }
 });
 

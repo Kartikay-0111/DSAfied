@@ -8,7 +8,7 @@ const PlatformCard = ({ platform }) => {
     <div className="platform-card">
       <PlatformInfo type="left" label={`Questions Solved: ${platform.solved}`} />
       <PlatformLogo logo={platform.logo} />
-      <PlatformInfo type="right" label={`Rating: ${platform.rating}`} />
+      <PlatformInfo type="right" label={`Rating: ${platform.rating ? platform.rating : platform.currentRating}`} />
     </div>
   );
 };

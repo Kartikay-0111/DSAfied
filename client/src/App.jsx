@@ -8,10 +8,16 @@ import {
   LEETCODE_TOTAL_QUES,
 } from "./api/graphql/queries/lc_user_data";
 import { fetchLCData } from "./api/rest/lc_data";
+import { fetchCCData } from "./api/rest/codechef_data";
+import { fetchCFData } from "./api/rest/codeforces_data";
+import { fetchGFGData } from "./api/rest/geeks_data";
 
 function App() {
   const [lcSolvedQuestions, setLCSolvedQuestions] = useState([]);
   const [ratingLC, setRatingLC] = useState([]);
+  const [codechefData, setCodechefData] = useState([])
+  const [codeforcesData, setCodeforcesData] = useState([])
+  const [geeksData, setGeeksData] = useState([])
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -21,18 +27,28 @@ function App() {
       try {
         const total_ques_query = LEETCODE_TOTAL_QUES;
         const rating_query = LEETCODE_RATING;
-        console.log(rating_query);
-
         const variables = { userSlug: "Tan4585", username: "Tan4585" };
-        const probSolvedData = await fetchLCData(total_ques_query, variables);
-        const ratingData = await fetchLCData(rating_query, variables);
-        console.log(ratingData);
+        const cc_username = "tan_4585"
+        const cf_username = "Chef-KTK"
+        const gfg_username = "bhamanfak"
+
+
+        const [probSolvedData, ratingData, cc_data, cf_data, gfg_data] = await Promise.all([
+        fetchLCData(total_ques_query, variables),
+        fetchLCData(rating_query, variables),
+        fetchCCData(cc_username),
+        fetchCFData(cf_username),
+        fetchGFGData(gfg_username)
+      ])
 
         setLCSolvedQuestions(
           probSolvedData.data.userProfileUserQuestionProgressV2
             .numAcceptedQuestions
         );
         setRatingLC(ratingData.data.userContestRanking);
+        setCodechefData(cc_data)
+        setCodeforcesData(cf_data)
+        setGeeksData(gfg_data)
       } catch (err) {
         setError(err.message);
       } finally {
@@ -57,22 +73,26 @@ function App() {
       name: "CodeChef",
       logo: "https://user-images.githubusercontent.com/63710339/185728318-0b976716-4f78-4a0a-a377-1643cc18a57e.png",
       username: "chefmaster99",
-      rating: 1700,
+      currentRating: loading ? "Loading..." : codechefData.currentRating,
+      highestRating: loading ? "Loading..." : codechefData.highestRating,
+      stars: loading ? "Loading..." : codechefData.stars,
       solved: 300, // Placeholder for solved questions
     },
     {
       name: "Codeforces",
       logo: "https://img.icons8.com/?size=160&id=jldAN67IAsrW&format=png",
       username: "cf_expert",
-      rating: 1600,
+      rating: loading ? "Loading..." : codeforcesData.rating,
+      maxRating: loading ? "Loading..." : codeforcesData.maxRating,
+      rank: codeforcesData.rank,
       solved: 200, // Placeholder for solved questions
     },
     {
       name: "GeeksForGeeks",
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/GeeksforGeeks.svg/640px-GeeksforGeeks.svg.png",
       username: "geekcoder",
-      rating: 1400,
-      solved: 150, // Placeholder for solved questions
+      rating: loading ? "Loading..." : geeksData.rating,
+      solved: loading ? "Loading..." : geeksData.prob_solved, // Placeholder for solved questions
     },
   ];
 
