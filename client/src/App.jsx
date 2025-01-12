@@ -12,14 +12,22 @@ import { fetchCCData } from "./api/rest/codechef_data";
 import { fetchCFData } from "./api/rest/codeforces_data";
 import { fetchGFGData } from "./api/rest/geeks_data";
 
+import {
+  fetchCodeforcesData,
+  prepareChartData,
+} from "../src/api/rest/graph_data";
+
 function App() {
   const [lcSolvedQuestions, setLCSolvedQuestions] = useState([]);
   const [ratingLC, setRatingLC] = useState([]);
-  const [codechefData, setCodechefData] = useState([])
-  const [codeforcesData, setCodeforcesData] = useState([])
-  const [geeksData, setGeeksData] = useState([])
+  const [codechefData, setCodechefData] = useState([]);
+  const [codeforcesData, setCodeforcesData] = useState([]);
+  const [geeksData, setGeeksData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [ratingHistory, setRatingHistory] = useState([]);
+  const [graphUsername, setGraphusername] = useState("Chef-KTK");
 
   useEffect(() => {
     async function getData() {
@@ -28,27 +36,27 @@ function App() {
         const total_ques_query = LEETCODE_TOTAL_QUES;
         const rating_query = LEETCODE_RATING;
         const variables = { userSlug: "Tan4585", username: "Tan4585" };
-        const cc_username = "tan_4585"
-        const cf_username = "Chef-KTK"
-        const gfg_username = "bhamanfak"
+        const cc_username = "tan_4585";
+        const cf_username = "Chef-KTK";
+        const gfg_username = "bhamanfak";
 
-
-        const [probSolvedData, ratingData, cc_data, cf_data, gfg_data] = await Promise.all([
-        fetchLCData(total_ques_query, variables),
-        fetchLCData(rating_query, variables),
-        fetchCCData(cc_username),
-        fetchCFData(cf_username),
-        fetchGFGData(gfg_username)
-      ])
+        const [probSolvedData, ratingData, cc_data, cf_data, gfg_data] =
+          await Promise.all([
+            fetchLCData(total_ques_query, variables),
+            fetchLCData(rating_query, variables),
+            fetchCCData(cc_username),
+            fetchCFData(cf_username),
+            fetchGFGData(gfg_username),
+          ]);
 
         setLCSolvedQuestions(
           probSolvedData.data.userProfileUserQuestionProgressV2
             .numAcceptedQuestions
         );
         setRatingLC(ratingData.data.userContestRanking);
-        setCodechefData(cc_data)
-        setCodeforcesData(cf_data)
-        setGeeksData(gfg_data)
+        setCodechefData(cc_data);
+        setCodeforcesData(cf_data);
+        setGeeksData(gfg_data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -102,10 +110,22 @@ function App() {
     username: "Tanish2207",
   };
 
+  useEffect(() => {
+    fetchCodeforcesData(graphUsername).then((data) => {
+      setRatingHistory(data);
+    });
+  }, [graphUsername]);
+
+  const chartData = prepareChartData(ratingHistory, graphUsername);
+
   return (
     <div>
       <UserProfile user={user} />
-      <RatingChart />
+      {ratingHistory.length > 0 ? (
+        <RatingChart chartData={chartData} />
+      ) : (
+        <p>Loading data...</p>
+      )}
       <div className="platforms-container">
         {platforms.map((platform, index) => (
           <PlatformCard key={index} platform={platform} />

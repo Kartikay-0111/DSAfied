@@ -1,9 +1,8 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
 import "./index.css";
 import App from "./App.jsx";
-import { ApolloProviderWrapper } from "./api/graphql/ApolloClient.jsx";
 
 createRoot(document.getElementById("root")).render(
     <Auth0Provider
@@ -15,9 +14,7 @@ createRoot(document.getElementById("root")).render(
         scope: "openid profile email",
       }}
     >
-      <ApolloProviderWrapper>
         <App />
-      </ApolloProviderWrapper>
       ,
     </Auth0Provider>
 );
