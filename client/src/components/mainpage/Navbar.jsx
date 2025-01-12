@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Login from './login';
+import Login from '../login';
 import { useAuth0 } from '@auth0/auth0-react';
-import LogoutBtn from './logout';
+import LogoutBtn from '../logout';
 const Navbar = () => {
     const {user, isAuthenticated} = useAuth0();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

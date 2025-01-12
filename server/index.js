@@ -2,9 +2,12 @@ import express, { json } from 'express';
 import * as dotenv from 'dotenv';
 import path from 'path';
 import cors from 'cors';
-import router from './routes/user.routes.js';
+import userRoutes from './routes/user.routes.js';
+import articleRoute from './routes/article.routes.js';
+import problemRoutes from './routes/problem.routes.js';
 import connectDB from './database/connect.js';
 import jwtCheck from './middleware/jwtcheck.js';
+import { Daily } from './models/daily.js';
 dotenv.config();
 
 const app = express();
@@ -22,9 +25,11 @@ app.use(cors({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(jwtCheck);
-// Routes
 
-app.use('/api/users', router);
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/article', articleRoute);
+app.use('/api/problem', problemRoutes);
 
 // Start Server
 try{
@@ -33,6 +38,6 @@ try{
       console.log(`Server running on http://localhost:${PORT}`);
     });
 }
-catch(e){
-    console.log("Server failed to start", e.message);
+catch(err){
+  console.log(err);
 }
