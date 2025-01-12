@@ -18,14 +18,15 @@ const LoginCallback = () =>{
                 audience: 'http://localhost/',
                 scope: 'openid profile email',
               });
-              console.log(token);
+              localStorage.setItem("token", token);
+              // console.log(token);
               const response = await axios.post("http://localhost:3000/api/users/check-user",{},
                 {
                   headers: { Authorization: `Bearer ${token}` }
                 }
               );
         
-              if(response.data.message === "User already exists") navigate("/");
+              if(response.data.message === "User already exists") navigate("/potd");
               else navigate("/onboard");
               }
           }

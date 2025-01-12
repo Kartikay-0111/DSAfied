@@ -5,7 +5,9 @@ const problemSchema = new mongoose.Schema({
     title: {type: String, required:true},
     titleSlug: {type: String, required: true},
     topicTags: [{type: String, required: true }],
-    // popularity: {type: Number, required: true},
-
+    popularity: {type: Number, required: true},
+    doubts: [{
+        doubtId: { type: mongoose.Schema.Types.ObjectId}
+    }],
 });
 export const Problem = mongoose.model('Problem', problemSchema);
