@@ -1,6 +1,6 @@
 export const fetchLCData = async (query, variables) => {
   try {
-    const res = await fetch(`/api/profile/${variables.userSlug}`, {
+    const res = await fetch(`/api/profile/${variables.username}`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

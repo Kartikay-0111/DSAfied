@@ -3,32 +3,43 @@ import "./App.css";
 import UserProfile from "./components/Profile/UserProfile";
 import PlatformCard from "./components/Profile/PlatformCard";
 import RatingChart from "./components/Profile/RatingChart";
-import { LEETCODE_SUBM, LEETCODE_TOTAL_QUES } from "./api/graphql/queries/lc_user_data";
+import {
+  LEETCODE_RATING,
+  LEETCODE_TOTAL_QUES,
+} from "./api/graphql/queries/lc_user_data";
 import { fetchLCData } from "./api/rest/lc_data";
 
 function App() {
   const [lcSolvedQuestions, setLCSolvedQuestions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [ratingLC, setRatingLC] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function getData() {
-    try {
-      const query = LEETCODE_TOTAL_QUES;
-      console.log(query);
+      setLoading(true);
+      try {
+        const total_ques_query = LEETCODE_TOTAL_QUES;
+        const rating_query = LEETCODE_RATING;
+        console.log(rating_query);
 
-      const variables = { userSlug: "Tan4585"};
-      const probSolvedData = await fetchLCData(query, variables);
-      console.log(probSolvedData);
+        const variables = { userSlug: "Tan4585", username: "Tan4585" };
+        const probSolvedData = await fetchLCData(total_ques_query, variables);
+        const ratingData = await fetchLCData(rating_query, variables);
+        console.log(ratingData);
 
-      setLCSolvedQuestions(probSolvedData);
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
+        setLCSolvedQuestions(
+          probSolvedData.data.userProfileUserQuestionProgressV2
+            .numAcceptedQuestions
+        );
+        setRatingLC(ratingData.data.userContestRanking);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
-  getData()
+    getData();
   }, []);
   // ---------------------------------------------------------------------------
   // Placeholder data for each platform
@@ -37,8 +48,10 @@ function App() {
       name: "LeetCode",
       logo: "https://upload.wikimedia.org/wikipedia/commons/8/8e/LeetCode_Logo_1.png",
       username: "johndoe123",
-      rating: "1234",
-      solved: lcSolvedQuestions.solvedProblem,
+      rating: loading ? "Loading..." : Math.round(ratingLC.rating),
+      solved: loading
+        ? "Loading..."
+        : lcSolvedQuestions.reduce((acc, x) => acc + x.count, 0),
     },
     {
       name: "CodeChef",
@@ -78,8 +91,6 @@ function App() {
           <PlatformCard key={index} platform={platform} />
         ))}
       </div>
-
-      <p>----------------------------HELOO------------------------------</p>
     </div>
   );
 }

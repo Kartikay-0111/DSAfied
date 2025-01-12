@@ -33,6 +33,7 @@ app.post("/api/profile/:username", async (req, res) => {
     const uname = req.params["username"];
     const { query, variables } = req.body;
     variables.username = uname;
+    variables.userSlug = uname
 
     const response = await fetch("https://leetcode.com/graphql", {
       method: "POST",

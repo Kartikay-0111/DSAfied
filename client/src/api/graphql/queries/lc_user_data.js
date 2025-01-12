@@ -19,3 +19,12 @@ export const LEETCODE_TOTAL_QUES = `
   }
 }
 `;
+
+export const LEETCODE_RATING = `
+query userContestRankingInfo($username: String!) {
+  userContestRanking(username: $username) {
+    attendedContestsCount
+    rating
+  }
+}
+`
