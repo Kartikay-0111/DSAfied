@@ -24,6 +24,11 @@ app.use(cors({
 }));
 
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+  res.json({ status: 'Server is up and running!' });
+});
+
 app.use(jwtCheck);
 
 // Routes

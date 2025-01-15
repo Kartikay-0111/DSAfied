@@ -1,7 +1,9 @@
 import { Router } from 'express';
-import { createUser,checkUser } from '../controllers/user.controller.js';
+import { createUser,checkUser, getUserById } from '../controllers/user.controller.js';
 import multer from 'multer';
+
 const userRoutes = Router();
+
 
 const upload = multer({storage: multer.memoryStorage()});    //multer mdlware to store file and get form data *
 

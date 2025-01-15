@@ -7,21 +7,31 @@ import Footer from "./components/mainpage/Footer";
 import POTD from "./components/potdpage/potd";
 import Concept from "./components/potdpage/concept";
 import AllProblems from "./components/problemset/AllProblems";
-// import { get } from "mongoose";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import IntervwCompo from "./components/interviewpage/IntervwCompo";
+
 
 function App() {
   const token = localStorage.getItem("token");
+  console.log(token)
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+
         <Route path="/" element={<Root />}>
-          <Route index element={token ? <POTD /> : <LandingPage />} />
-          <Route path="potd" element={<POTD />} />
+          <Route index element={ <LandingPage />} />
+          <Route path="/callback" element={<LoginCallback />} />
+          <Route element ={<ProtectedRoute/>}>
+          <Route path="/potd" element={<POTD />} />
           <Route path="onboard" element={<OnboardForm />} />
-          <Route path="callback" element={<LoginCallback />} />
           <Route path="concept-of-the-day" element={<Concept />} />
-          <Route path="/problemset" element={<AllProblems />} />
+          {/* <Route path="/problemset" element={<AllProblems />} /> */}
+          <Route path='/IntervwCompo' element={<IntervwCompo />} />
+          </Route>
          </Route>
+      
+
       </>
     )
   );
