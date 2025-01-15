@@ -8,7 +8,6 @@ import POTD from "./components/potdpage/potd";
 import Concept from "./components/potdpage/concept";
 import AllProblems from "./components/problemset/AllProblems";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import IntervwCompo from "./components/interviewpage/IntervwCompo";
 
 
@@ -30,8 +29,6 @@ function App() {
           <Route path='/IntervwCompo' element={<IntervwCompo />} />
           </Route>
          </Route>
-      
-
       </>
     )
   );
