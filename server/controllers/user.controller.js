@@ -2,7 +2,7 @@ import { User } from '../models/user.js';
 import {v2 as cloudinary} from 'cloudinary';
 import * as dotenv from 'dotenv';
 import stream from 'stream';
-
+import { initializeUserProblems } from './problems.controller.js';
 dotenv.config();
 
 cloudinary.config({
@@ -49,6 +49,7 @@ const createUser = async (req, res) => {
     let existingUser = await User.findOne({ auth0Id: sub });
 
     if(existingUser){
+        // await initializeUserProblems(existingUser.auth0Id);
         return res.status(409).json({ 
             message: "User already exists",
             user: existingUser,
@@ -66,6 +67,7 @@ const createUser = async (req, res) => {
     })
 
     await newUser.save();
+    await initializeUserProblems(newUser.auth0Id);
     res.status(201).json(newUser);
   }
   catch(e){
@@ -77,6 +79,7 @@ const checkUser = async (req, res) => {
   const {sub} = req.auth.payload;
   const user = await User.findOne({ auth0Id:sub });
   if(user){
+    // await initializeUserProblems(user.auth0Id);
     return res.json({message: "User already exists", user});
   }
   return res.json({message: "User not found"});
