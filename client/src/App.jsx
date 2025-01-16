@@ -7,6 +7,7 @@ import Footer from "./components/mainpage/Footer";
 import POTD from "./components/potdpage/potd";
 import Concept from "./components/potdpage/concept";
 import AllProblems from "./components/problemset/AllProblems";
+import Problemset from "./components/problemset/Problemset";
 // import { get } from "mongoose";
 
 function App() {
@@ -15,12 +16,13 @@ function App() {
     createRoutesFromElements(
       <>
         <Route path="/" element={<Root />}>
-          <Route index element={token ? <POTD /> : <LandingPage />} />
+          <Route index element={<LandingPage />} />
           <Route path="potd" element={<POTD />} />
           <Route path="onboard" element={<OnboardForm />} />
           <Route path="callback" element={<LoginCallback />} />
           <Route path="concept-of-the-day" element={<Concept />} />
           <Route path="/problemset" element={<AllProblems />} />
+          <Route path="/problemset1" element={<Problemset />} />
          </Route>
       </>
     )
