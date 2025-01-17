@@ -10,7 +10,7 @@ const IntervwCompo = () => {
       topic: 'Array',
       title: "Two Sum",
       description: "Given an array of integers nums and an integer target, return indices of the two numbers that add up to target.",
-      leetcodeUrl: "https://leetcode.com/problems/two-sum/",
+      "title-slug": "two-sum",
       difficulty: "Easy",
     },
     {
@@ -18,7 +18,7 @@ const IntervwCompo = () => {
       topic: 'String',
       title: "Valid Parentheses",
       description: "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
-      leetcodeUrl: "https://leetcode.com/problems/valid-parentheses/",
+      "title-slug": "valid-parentheses",
       difficulty: "Medium",
     },
     {
@@ -26,7 +26,7 @@ const IntervwCompo = () => {
       topic: 'Linked List',
       title: "Merge Intervals",
       description: "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals.",
-      leetcodeUrl: "https://leetcode.com/problems/merge-intervals/",
+      "title-slug": "merge-intervals",
       difficulty: "Hard",
     }
   ];

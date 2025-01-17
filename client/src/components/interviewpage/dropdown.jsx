@@ -22,7 +22,22 @@ const TopicDropDown =({topic,questions}) =>{
       const isChecked = e.target.checked;
       setProgress((prev) => isChecked ? prev + 1 : prev - 1);
     }
-
+    const checkSolved = async () =>{
+      console.log("checking solved");
+      try{
+      const response = await fetch('http://localhost:3000/api/check-solved',{
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({titleSlug: "neighboring-bitwise-xor"})  //pass the title slug of selected prblm in body smhow-> will be compared with lc official data
+        
+    })
+    const data = await response.json();
+    console.log(data);
+  }
+  catch(e){
+    console.log(e);
+  }
+  }
     const handleNote = (e) => {
       setIsNoteOpen(true);
     }
@@ -62,7 +77,7 @@ const TopicDropDown =({topic,questions}) =>{
                     <td className="p-4">
                       <input 
                         type="checkbox" 
-                        onClick={handleProgress}
+                        onClick={checkSolved}
                         className="checkbox checkbox-sm bg-gray-800 border-gray-600"
                       />
                     </td>
@@ -73,7 +88,7 @@ const TopicDropDown =({topic,questions}) =>{
                     </td>
                     <td className="p-4">
                       <a 
-                        href={question.leetcodeUrl}
+                        href={"https://leetcode.com/problems/" +question["titleslug"]+"/"}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors"
