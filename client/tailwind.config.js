@@ -7,7 +7,7 @@ module.exports = {
 
     plugins: [require("daisyui")],
     daisyui: {
-      themes: ["light", "cupcake"], // Remove "dark" from the theme list
+      themes: ["dark"], // Remove "dark" from the theme list
     },
   };
 

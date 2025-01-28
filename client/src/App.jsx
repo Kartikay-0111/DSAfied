@@ -7,9 +7,14 @@ import Footer from "./components/mainpage/Footer";
 import POTD from "./components/potdpage/potd";
 import Concept from "./components/potdpage/concept";
 import AllProblems from "./components/problemset/AllProblems";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import IntervwCompo from "./components/interviewpage/IntervwCompo";
 import { AuthProvider } from "./context/authcontext";
+
+
+import Problemset from "./components/problemset/Problemset";
+// import { get } from "mongoose";
 
 
 function App() {
@@ -20,15 +25,21 @@ function App() {
       <>
 
         <Route path="/" element={<Root />}>
+
           <Route index element={ <LandingPage />} />
           <Route path="/callback" element={<LoginCallback />} />
           <Route element ={<ProtectedRoute/>}>
           <Route path="/potd" element={<POTD />} />
+
           <Route path="onboard" element={<OnboardForm />} />
           <Route path="concept-of-the-day" element={<Concept />} />
-          {/* <Route path="/problemset" element={<AllProblems />} /> */}
+
           <Route path='/IntervwCompo' element={<IntervwCompo />} />
           </Route>
+
+          <Route path="/problemset" element={<AllProblems />} />
+          <Route path="/problemset1" element={<Problemset />} />
+
          </Route>
       </>
     )

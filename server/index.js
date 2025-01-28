@@ -27,6 +27,11 @@ app.use(cors({
 }));
 
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
 
 app.get('/', (req, res) => {
   res.json({ status: 'Server is up and running!' });
@@ -79,6 +84,7 @@ app.use(jwtCheck);
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/article', articleRoute);
+app.use('/api', problemRoutes);
 app.use('/api/problem', problemRoutes);
 
 
