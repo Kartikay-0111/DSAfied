@@ -12,8 +12,11 @@ createRoot(document.getElementById('root')).render(
       authorizationParams={{
         redirect_uri: window.location.origin + "/callback",
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-        scope: "openid profile email"
+        scope: "openid profile email offline_access"
       }}
+      cacheLocation="localstorage"
+      useRefreshTokens={true}
+      useLocalStorageCache={true}
   >
     <App />
     </Auth0Provider>

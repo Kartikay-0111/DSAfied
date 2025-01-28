@@ -1,10 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Login from '../login';
 import { useAuth0 } from '@auth0/auth0-react';
 import LogoutBtn from '../logout';
 const Navbar = () => {
-    const {user, isAuthenticated} = useAuth0();
+    const {user, isAuthenticated, getAccessTokenSilently} = useAuth0();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    useEffect(() =>{
+        console.log("Navbar");
+        // const token = getAccessTokenSilently(
+        //     {
+        //         audience: 'http://localhost/',
+        //         scope: 'openid profile email offline_access',
+        //     }
+        // );
+        // console.log(token);
+
+        console.log(isAuthenticated);
+        console.log(user);
+    },[isAuthenticated, user])
     return (
         <div>
             <header className="bg-black sticky top-0 z-50 flex justify-center items-center">

@@ -9,6 +9,7 @@ import Concept from "./components/potdpage/concept";
 import AllProblems from "./components/problemset/AllProblems";
 import ProtectedRoute from "./components/ProtectedRoute";
 import IntervwCompo from "./components/interviewpage/IntervwCompo";
+import { AuthProvider } from "./context/authcontext";
 
 
 function App() {
@@ -34,9 +35,11 @@ function App() {
   );
 
   return (
+    <AuthProvider>
     <div className="App">
       <RouterProvider router={router} />
     </div>
+    </AuthProvider>
   );
 }
 
