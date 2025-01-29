@@ -1,6 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useEffect } from "react";
+// import { use } from "react";
 
-const MCQs = ({ mcqs, onSolve }) => {
+const mcqs = [
+  {
+    question: "What is the capital of France?",
+    options: ["Berlin", "Madrid", "Paris", "Rome"],
+    answer: 2,
+  },
+  {
+    question: "Which programming language is used for web apps?",
+    options: ["Python", "Java", "C++", "JavaScript"],
+    answer: 3,
+  },
+  {
+    question: "What is the square root of 16?",
+    options: ["2", "4", "8", "16"],
+    answer: 1,
+  },
+  {
+    question: "Which planet is known as the Red Planet?",
+    options: ["Earth", "Mars", "Venus", "Jupiter"],
+    answer: 1,
+  },
+  {
+    question: "What is the largest ocean on Earth?",
+    options: ["Atlantic", "Indian", "Pacific", "Arctic"],
+    answer: 2,
+  },
+];
+
+const MCQs = () => {
+  // const [mcqs, setMcqs] = useState([]);
+  // let date = new Date();
+  // date =  date.toISOString().split('T')[0];
+  // console.log(date);
+  // useEffect(() => {
+  //   fetch(`http://localhost:3000/api/daily/${date}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     }
+  //     );
+  // }, []);
+
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState(Array(mcqs.length).fill(null));
   const [submitted, setSubmitted] = useState(Array(mcqs.length).fill(false));

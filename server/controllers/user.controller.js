@@ -87,6 +87,12 @@ const checkUser = async (req, res) => {
 
 }
 
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findOne({auth0Id:id});
+  res.json(user);
+}
+
 const updateStreak = async (req, res) => {
   // const { sub } = req.auth.payload;
   const {sub, mcqsSolved, problemsSolved } = req.body;
@@ -167,4 +173,4 @@ const getStreak = async (req, res) => {
   });
 };
 
-export { createUser, checkUser, updateStreak ,getStreak};
+export { createUser, checkUser, updateStreak ,getStreak,getUserByod};
