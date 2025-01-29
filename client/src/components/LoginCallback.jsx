@@ -16,9 +16,9 @@ const LoginCallback = () =>{
               await handleRedirectCallback();
               const token = await getAccessTokenSilently({
                 audience: 'http://localhost/',
-                scope: 'openid profile email',
+                scope: 'openid profile email offline_access',
               });
-              localStorage.setItem("token", token);
+              // localStorage.setItem("token", token);
               // console.log(token);
               const response = await axios.post("http://localhost:3000/api/users/check-user",{},
                 {

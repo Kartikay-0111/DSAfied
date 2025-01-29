@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser,checkUser } from '../controllers/user.controller.js';
+import { createUser,checkUser, getUserById } from '../controllers/user.controller.js';
 import multer from 'multer';
 const userRoutes = Router();
 

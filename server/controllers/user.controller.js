@@ -85,4 +85,10 @@ const checkUser = async (req, res) => {
   return res.json({message: "User not found"});
 
 }
-export { createUser, checkUser };
+
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findOne({auth0Id:id});
+  res.json(user);
+}
+export { createUser, checkUser, getUserById };

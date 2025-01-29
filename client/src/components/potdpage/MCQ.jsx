@@ -51,6 +51,7 @@ const MCQs = () => {
   //     );
   // }, []);
 
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState(Array(mcqs.length).fill(null));
   const [submitted, setSubmitted] = useState(Array(mcqs.length).fill(false));
