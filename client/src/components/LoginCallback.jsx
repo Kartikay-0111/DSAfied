@@ -18,7 +18,7 @@ const LoginCallback = () =>{
                 audience: 'http://localhost/',
                 scope: 'openid profile email',
               });
-              localStorage.setItem("token", token);
+              // localStorage.setItem("token", token);
               // console.log(token);
               const response = await axios.post("http://localhost:3000/api/users/check-user",{},
                 {

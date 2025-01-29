@@ -7,6 +7,7 @@ import articleRoute from './routes/article.routes.js';
 import problemRoutes from './routes/problem.routes.js';
 import connectDB from './database/connect.js';
 import jwtCheck from './middleware/jwtcheck.js';
+import potdRoutes from './routes/potd.routes.js';
 import { Daily } from './models/daily.js';
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use(jwtCheck);
 app.use('/api/users', userRoutes);
 app.use('/api/article', articleRoute);
 app.use('/api', problemRoutes);
+app.use('/api/potd',potdRoutes);
 
 // Start Server
 try{

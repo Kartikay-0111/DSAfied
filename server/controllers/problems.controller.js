@@ -6,21 +6,49 @@ async function initializeUserProblems(auth0Id) {
         // Fetch all problem IDs from the Problem collection
         const problems = await Problem.find({}, '_id');
 
-        const bulkOps = problems.map(problem => ({
-            updateOne: {
-                filter: { auth0Id, problemId: problem._id },
-                update: { $setOnInsert: { auth0Id, problemId: problem._id, parameters: [], solved: false, note: null } },
-                upsert: true, // Create a new entry if it doesn't exist
-            }
-        }));
+        const userProblem = await UserProblem.findOne({ auth0Id });
 
-        // Execute bulk write operation
-        if (bulkOps.length > 0) {
-            await UserProblem.bulkWrite(bulkOps);
+        if (!userProblem) {
+            const newUserProblem = new UserProblem({
+                auth0Id,
+                problems: problems.map(problem => ({
+                    id: problem._id.toString(),
+                    isSolved: false,
+                    note: null,
+                    parameters: []
+                }))
+            });
+            await newUserProblem.save();
+        } else {
+            problems.forEach(problem => {
+                if (!userProblem.problems.some(p => p.id === problem._id.toString())) {
+                    userProblem.problems.push({
+                        id: problem._id.toString(),
+                        isSolved: false,
+                        note: null,
+                        parameters: []
+                    });
+                }
+            });
+            await userProblem.save();
         }
+
         console.log(`Initialized problems for user ${auth0Id}`);
     } catch (error) {
         console.error('Error initializing user problems:', error);
+    }
+}
+async function getProblem(req, res) {
+    const { id } = req.params;
+    // console.log(id);
+    try {
+        const problem = await Problem.findById(id);
+        if (!problem) {
+            return res.status(404).json({ message: "Problem not found" });
+        }
+        return res.status(200).json(problem);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
@@ -45,48 +73,78 @@ async function getProblems(req, res) {
     }
 }
 
-const addNote = async (req,res) => {
-    const {auth0Id, problemId, note } = req.body;
+const addNote = async (req, res) => {
+    const { auth0Id, problemId, note } = req.body;
     try {
-        const userProblem = await UserProblem.findOne({ auth0Id, problemId });
+        const userProblem = await UserProblem.findOne({ auth0Id });
         if (!userProblem) {
             return res.status(404).json({ message: "User problem not found" });
         }
-        userProblem.note = note;
+        const problem = userProblem.problems.find(p => p.id.toString() === problemId);
+        if (!problem) {
+            return res.status(404).json({ message: "Problem not found" });
+        }
+        problem.note = note;
         await userProblem.save();
         return res.status(200).json(userProblem);
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-}
+};
 
 const getNote = async (req, res) => {
-  const { auth0Id, problemId } = req.query; // Use query parameters for GET request
+    const { auth0Id, problemId } = req.query; // Use query parameters for GET request
 
-  try {
-    const userProblem = await UserProblem.findOne({ auth0Id, problemId });
-    if (!userProblem) {
-      return res.status(404).json({ message: "User problem not found" });
-    }
-    return res.status(200).json({ note: userProblem.note }); // Wrap `note` in an object
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
-const toggleSolved = async (req,res) => {
-    const {auth0Id, problemId } = req.body;
     try {
-        const userProblem = await UserProblem.findOne({ auth0Id, problemId });
+        const userProblem = await UserProblem.findOne({ auth0Id });
         if (!userProblem) {
             return res.status(404).json({ message: "User problem not found" });
         }
-        userProblem.solved = !userProblem.solved;
+        const problem = userProblem.problems.find(p => p.id.toString() === problemId);
+        if (!problem) {
+            return res.status(404).json({ message: "Problem not found" });
+        }
+        return res.status(200).json({ note: problem.note }); // Wrap `note` in an object
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+const toggleSolved = async (req, res) => {
+    const { auth0Id, problemId } = req.body;
+    try {
+        const userProblem = await UserProblem.findOne({ auth0Id });
+        if (!userProblem) {
+            return res.status(404).json({ message: "User problem not found" });
+        }
+        const problem = userProblem.problems.find(p => p.id.toString() === problemId);
+        if (!problem) {
+            return res.status(404).json({ message: "Problem not found" });
+        }
+        problem.solvedstatus = !problem.solvedstatus;
         await userProblem.save();
         return res.status(200).json(userProblem);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+const getUserProblem = async (req, res) => {
+    const { auth0Id, problemId } = req.query; // Use query parameters for GET request
+
+    try {
+        const userProblem = await UserProblem.findOne({ auth0Id });
+        if (!userProblem) {
+            return res.status(404).json({ message: "User problem not found" });
+        }
+        const problem = userProblem.problems.find(p => p.id.toString() === problemId);
+        if (!problem) {
+            return res.status(404).json({ message: "Problem not found" });
+        }
+        return res.status(200).json(problem);
     }
     catch (error) {
         return res.status(500).json({ message: error.message });
     }
 }
-export { getProblems ,addNote , getNote, initializeUserProblems,toggleSolved };
+export { getProblems ,addNote , getNote, initializeUserProblems,toggleSolved ,getProblem,getUserProblem};

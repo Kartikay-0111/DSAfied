@@ -25,7 +25,6 @@ const ProblemsList = () => {
   const problemsPerPage = 50;
   const { user, getAccessTokenSilently } = useAuth0();
 
-  // ... Keep all your existing useEffect hooks and handlers ...
   useEffect(() => {
     const fetchProblems = async () => {
       const token = await getAccessTokenSilently();
@@ -164,10 +163,10 @@ const ProblemsList = () => {
     });
   };
 
-  const handleAddNote = (problemId) => {
+  const handleAddNote = async (problemId) => {
     setSelectedProblemId(problemId);
-    fetchNote(problemId);
-    document.getElementById("my_modal_1").showModal(); // Open the modal
+    await fetchNote(problemId);
+    document.getElementById("problem_note_modal").showModal();
   };
 
   const saveNote = async () => {
@@ -177,7 +176,7 @@ const ProblemsList = () => {
     }
     const token = await getAccessTokenSilently();
     const auth0Id = user.sub;
-    // console.log(token)
+    console.log(token)
     try {
       const response = await fetch(`http://localhost:3000/api/problem/note`, {
         method: "POST",
@@ -200,7 +199,7 @@ const ProblemsList = () => {
       console.log("Note saved successfully:", data);
       alert("Note saved!");
       setNote(""); // Clear the note input
-      document.getElementById("my_modal_1").close(); // Close the modal
+      document.getElementById("problem_note_modal").close(); // Close the modal
     } catch (error) {
       console.error("Error saving note:", error);
       alert("Failed to save the note. Please try again.");

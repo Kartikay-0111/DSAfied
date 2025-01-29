@@ -5,11 +5,10 @@ import Form1 from "./form1";
 import Form2 from "./form2";
 import Form3 from "./form3";
 import { useAuth0 } from "@auth0/auth0-react";
-import {useNavigate} from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 const OnboardForm = () => {
-  const {user, getAccessTokenSilently} = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
   const [activeFormIndex, setActiveFormIndex] = useState(0);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -17,7 +16,7 @@ const OnboardForm = () => {
       username: user?.name || "",
       Name: "",
       avatar: null,
-    }, 
+    },
     form2: {
       Leetcode: "",
       "Geeks for geeks": "",
@@ -25,13 +24,9 @@ const OnboardForm = () => {
       Codeforces: ""
     },
     form3: {
-      difficulty:"",
+      difficulty: "",
     },
-  })
-  
-  // useEffect(()=>{
-  //   console.log("form data updated:",formData)
-  // },[formData]);
+  });
 
   const updateFormData = (formKey, data) => {
     setFormData((prev) => ({
@@ -47,48 +42,40 @@ const OnboardForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-        alert("You must login first")
-        return
+      alert("You must login first");
+      return;
     }
     if (!formData.form1.username || !formData.form1.Name || !formData.form1.avatar || !formData.form2.Leetcode || !formData.form2["Geeks for geeks"] || !formData.form2.Codechef || !formData.form2.Codeforces || !formData.form3.difficulty) {
-        alert("Please fill in all required fields.");
-        return;
+      alert("Please fill in all required fields.");
+      return;
     }
 
-    const userFormData = {...formData.form1, platform: JSON.stringify(formData.form2), ...formData.form3};
-    //convrt the platform object to string(form2)   to retrieve in bknd use parse
+    const userFormData = { ...formData.form1, platform: JSON.stringify(formData.form2), ...formData.form3 };
     const data = new FormData();
     for (const key in userFormData) {
-      if(userFormData.hasOwnProperty(key))
+      if (userFormData.hasOwnProperty(key))
         data.append(key, userFormData[key]); // Append each form field to the FormData object
     }
 
-    for (var pair of data.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
-    console.log(userFormData);
-  
-    try{
+    try {
       const token = await getAccessTokenSilently({
         audience: 'http://localhost/',
         scope: 'openid profile email',
       });
-      console.log(token);
-      const response = await axios.post("http://localhost:3000/api/users", data, 
-      {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-      }
-      })
-      console.log(response);
+      const response = await axios.post("http://localhost:3000/api/users", data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
 
-      if(response.status === 200 || response.status === 201){
+      if (response.status === 200 || response.status === 201) {
         setFormData({
           form1: {
             username: user?.name || "",
             Name: "",
             avatar: null,
-          }, 
+          },
           form2: {
             Leetcode: "",
             "Geeks for geeks": "",
@@ -96,25 +83,23 @@ const OnboardForm = () => {
             Codeforces: ""
           },
           form3: {
-            difficulty:"",
+            difficulty: "",
           },
         });
         setActiveFormIndex(0);
         alert("Form submitted successfully");
-        navigate("/potd"); //redirect to home page
+        navigate("/potd"); // redirect to home page
       }
+    } catch (error) {
+      console.log(error.message);
     }
-    catch(error){
-      console.log(error.message)
-    }
+  };
 
-  } 
-
-  const forms = [ 
-    <Form1 formData={formData.form1} setFormData={(data)=> updateFormData("form1", data)}/>,  //passing the formdata state & a new func to get formdata
-    <Form2 formData={formData.form2} setFormData={(data)=> updateFormData("form2", data)}/>,
-    <Form3 formData={formData.form3} setFormData={(data)=> updateFormData("form3", data)}/>,
-  ]
+  const forms = [
+    <Form1 formData={formData.form1} setFormData={(data) => updateFormData("form1", data)} />,  // passing the formdata state & a new func to get formdata
+    <Form2 formData={formData.form2} setFormData={(data) => updateFormData("form2", data)} />,
+    <Form3 formData={formData.form3} setFormData={(data) => updateFormData("form3", data)} />,
+  ];
 
   return (
     <div
@@ -178,9 +163,7 @@ const OnboardForm = () => {
             {forms.map((_, index) => (
               <div
                 key={index}
-                className={`bg-black w-3 h-3 cursor-pointer rounded-full transition-opacity duration-500 ${
-                  activeFormIndex === index ? "" : "opacity-30"
-                }`}
+                className={`bg-black w-3 h-3 cursor-pointer rounded-full transition-opacity duration-500 ${activeFormIndex === index ? "" : "opacity-30"}`}
                 onClick={() => navigateTo(index)}
               ></div>
             ))}
@@ -203,4 +186,5 @@ const OnboardForm = () => {
     </div>
   );
 };
+
 export default OnboardForm;

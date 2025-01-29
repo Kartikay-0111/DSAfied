@@ -13,7 +13,8 @@ const dailySchema = new mongoose.Schema({
             question: { type: String, required: true },
             options: [String],
             correct_option: { type: Number, required: true },
-            explanation: { type: String, required: true }
+            explanation: { type: String, required: true },
+            day: { type: Number, required: true }
         }
     ]
 });

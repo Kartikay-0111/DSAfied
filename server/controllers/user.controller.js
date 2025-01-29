@@ -64,6 +64,7 @@ const createUser = async (req, res) => {
         platforms: platform_json,
         difficulty_pref: difficulty,
         problems_solved: 0,
+        potdStreak: []
     })
 
     await newUser.save();
@@ -85,4 +86,85 @@ const checkUser = async (req, res) => {
   return res.json({message: "User not found"});
 
 }
-export { createUser, checkUser };
+
+const updateStreak = async (req, res) => {
+  // const { sub } = req.auth.payload;
+  const {sub, mcqsSolved, problemsSolved } = req.body;
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { auth0Id: sub },
+      {
+      $set: {
+        'potdStreak.$[elem].mcqsSolved': mcqsSolved,
+        'potdStreak.$[elem].problemsSolved': problemsSolved
+      }
+      },
+      {
+      arrayFilters: [{ 'elem.date': new Date().toISOString().split('T')[0] }],
+      new: true
+      }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.potdStreak.some(entry => entry.date.toISOString().split('T')[0] === new Date().toISOString().split('T')[0])) {
+      user.potdStreak.push({ date: new Date(), mcqsSolved, problemsSolved });
+      await user.save();
+    }
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+};
+
+const getCurrentStreak = (streak) => {
+  let currentStreak = 0;
+  const today = new Date().toISOString().split('T')[0];
+
+  for (let i = streak.length - 1; i >= 0; i--) {
+    const date = streak[i].date.toISOString().split('T')[0];
+    if (date === today || new Date(date) < new Date(today)) {
+      currentStreak++;
+    } else {
+      break;
+    }
+  }
+
+  return currentStreak;
+};
+
+const getMaxStreak = (streak) => {
+  let maxStreak = 0;
+  let currentStreak = 0;
+
+  for (let i = 0; i < streak.length; i++) {
+    const date = streak[i].date.toISOString().split('T')[0];
+    if (i === 0 || new Date(date) - new Date(streak[i - 1].date.toISOString().split('T')[0]) === 86400000) {
+      currentStreak++;
+    } else {
+      currentStreak = 1;
+    }
+    maxStreak = Math.max(maxStreak, currentStreak);
+  }
+
+  return maxStreak;
+};
+
+const getStreak = async (req, res) => {
+  // console.log(req.auth);
+  const { sub } = req.auth.payload;
+  const user = await User.findOne({ auth0Id: sub });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.json({ 
+    streak: user.potdStreak,
+    currentStreak: getCurrentStreak(user.potdStreak),
+    maxStreak: getMaxStreak(user.potdStreak)
+  });
+};
+
+export { createUser, checkUser, updateStreak ,getStreak};

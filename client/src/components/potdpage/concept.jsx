@@ -47,7 +47,7 @@ const TutorialComponent = () => {
   // Fetch tutorial data
   useEffect(() => {
     const fetchArticle = async () => {
-      const token = localStorage.getItem('token');
+      const token = await getAccessTokenSilently();
       try {
         const response = await fetch(`http://localhost:3000/api/article/${day}`,{
           method: 'GET',

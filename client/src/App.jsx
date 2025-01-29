@@ -6,12 +6,10 @@ import Navbar from "./components/mainpage/Navbar";
 import Footer from "./components/mainpage/Footer";
 import POTD from "./components/potdpage/potd";
 import Concept from "./components/potdpage/concept";
-import AllProblems from "./components/problemset/AllProblems";
-import Problemset from "./components/problemset/Problemset";
-// import { get } from "mongoose";
+import ProblemsList from "./components/problemset/Problemset";
 
 function App() {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -21,8 +19,7 @@ function App() {
           <Route path="onboard" element={<OnboardForm />} />
           <Route path="callback" element={<LoginCallback />} />
           <Route path="concept-of-the-day" element={<Concept />} />
-          <Route path="/problemset" element={<AllProblems />} />
-          <Route path="/problemset1" element={<Problemset />} />
+          <Route path="/problemset" element={<ProblemsList />} />
          </Route>
       </>
     )
