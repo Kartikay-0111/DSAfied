@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import UserProfile from "./components/Profile/UserProfile";
 import PlatformCard from "./components/Profile/PlatformCard";
 import RatingChart from "./components/Profile/RatingChart";
+import Sidebar from "./components/Profile/Sidebar";
 import {
   LEETCODE_RATING,
   LEETCODE_TOTAL_QUES,
@@ -104,10 +104,17 @@ function App() {
     },
   ];
 
-  const user = {
+  const [user, setUser] = useState({
     pfp: "https://avatars.githubusercontent.com/u/71320858?v=4",
     name: "Tanish Bhamare",
     username: "Tanish2207",
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleUpdate = (updatedUser) => {
+    setUser(updatedUser);
+    console.log("Updated User:", updatedUser);
   };
 
   useEffect(() => {
@@ -116,11 +123,11 @@ function App() {
     });
   }, [graphUsername]);
 
-  const chartData = prepareChartData(ratingHistory, graphUsername);
+  const chartData = prepareChartData(ratingHistory, graphUsername); 
 
   return (
     <div>
-      <UserProfile user={user} />
+      <Sidebar user={user} onUpdate={handleUpdate}/>
       {ratingHistory.length > 0 ? (
         <RatingChart chartData={chartData} />
       ) : (
