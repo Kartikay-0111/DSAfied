@@ -46,4 +46,34 @@
     font-size: 16px;
     color: #888;
 }
-  
+
+.editButton {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #6c757d; /* Secondary gray */
+    border: 2px solid #6c757d;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.editButton:hover {
+    background-color: #5a6268; /* Darker gray */
+    border-color: #545b62;
+}
+
+.editButton:active {
+    background-color: #495057;
+    border-color: #43484d;
+}
+
+.editButton:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(108, 117, 125, 0.5);
+}
+   

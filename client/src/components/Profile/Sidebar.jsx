@@ -11,7 +11,7 @@ const Sidebar = ({ user, onUpdate }) => {
       <UserProfile user={user} />
       <button
         onClick={() => setIsEditing(!isEditing)}
-        className="btn btn-secondary"
+        className="editButton"
       >
         {isEditing ? "Cancel" : "Edit Profile"}
       </button>
