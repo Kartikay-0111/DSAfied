@@ -16,6 +16,7 @@ const OnboardForm = () => {
     form1: {
       username: user?.name || "",
       Name: "",
+      email: user?.email || "",
       avatar: null,
     }, 
     form2: {

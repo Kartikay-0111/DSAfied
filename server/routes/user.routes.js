@@ -9,6 +9,6 @@ userRoutes.get('/', (req, res) => {
   res.json({ status: 'Server is up and running!' });
 });
 userRoutes.post('/', upload.single("avatar"), createUser);
-
+userRoutes.get('/:id', getUserById);
 userRoutes.post('/check-user', checkUser);
 export default userRoutes;

@@ -20,7 +20,7 @@ const createUser = async (req, res) => {
     const {sub} = req.auth.payload;
 
     // const avatar = req.auth.payload.picture;
-    const {username, Name, platform, difficulty} = req.body;
+    const {username, Name, email,  platform, difficulty} = req.body;
 
     //upload to cloudinary (using streams method)
     const photoUpload = await new Promise((resolve, reject) => {  
@@ -60,10 +60,12 @@ const createUser = async (req, res) => {
         auth0Id: sub,
         username,
         Name,
+        email,
         avatar: photoUrl,
         platforms: platform_json,
         difficulty_pref: difficulty,
         problems_solved: 0,
+        score: 0,
     })
 
     await newUser.save();
@@ -88,6 +90,7 @@ const checkUser = async (req, res) => {
 
 const getUserById = async (req, res) => {
   const { id } = req.params;
+  // const { sub } = req.auth.payload;
   const user = await User.findOne({auth0Id:id});
   res.json(user);
 }

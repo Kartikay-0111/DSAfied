@@ -46,7 +46,7 @@ const TopicDropDown =({topic,questions}) =>{
       <div className="relative w-full mx-auto mt-4">
         
         <div className="h-[0.5rem] bg-gray-900 rounded-t-lg">
-        <div className="h-[0.5rem] bg-green-400 rounded-t-lg" style={{ width: `${(progress / questions.length) * 100}%` }}></div>
+        {/* <div className="h-[0.5rem] bg-green-400 rounded-t-lg" style={{ width: `${(progress / questions.length) * 100}%` }}></div> */}
         </div>
         <button 
           onClick={() => setIsOpen(!isOpen)}

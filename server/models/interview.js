@@ -1,12 +1,26 @@
-const problemSchema = new mongoose.Schema({
-    id: {type: String, required: true},
-    step_no: {type: Number, required: true},
-    sl_no_in_step:  {type: Number, required: true},
-    head_step_no: {type: String, required: true},
-    title: {type: String, required: true},
-    lc_link: {type: String, required: true},
-    gfg_link: {type: String, required: true},
-    difficulty: {type: Number, required: true} ,
-    ques_topic: {type: String, required: true}  // Store as string, parse when needed
-  }
-);
+import mongoose from "mongoose";
+
+const topicSchema = new mongoose.Schema({
+  id: String,
+  step_no: Number,
+  sl_no_in_step: Number,
+  head_step_no: String,
+  title: String,
+  post_link: String,
+  yt_link: String,
+  cs_link: String,
+  gfg_link: String,
+  lc_link: String,
+  company_tags: [String], // Assuming array of strings
+  difficulty: Number,
+  ques_topic: String, // Store as JSON string or Array of Objects
+});
+
+const sheetSchema = new mongoose.Schema({
+  step_no: Number,
+  head_step_no: String,
+  topics: [topicSchema], // Embedding topics inside steps
+});
+
+export const Sheet = mongoose.model("Sheet", sheetSchema);
+
