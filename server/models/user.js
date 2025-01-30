@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     },
     difficulty_pref: {type: String, required: true, enum: ["Easy", "Medium", "Hard"]},
     problems_solved: {type: Number, required: true},
-    score: {type: Number, required: true},
+    score: {type: Number, required: true, default: 0},
     solved_history:[
         {
             problemId: { type: mongoose.Schema.Types.ObjectId },
