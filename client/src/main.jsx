@@ -14,7 +14,6 @@ createRoot(document.getElementById("root")).render(
         scope: "openid profile email",
       }}
     >
-        <App />
-      ,
+    <App />
     </Auth0Provider>
 );
