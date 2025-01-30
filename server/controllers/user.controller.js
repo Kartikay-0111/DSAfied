@@ -6,7 +6,7 @@ import {
   getDifficultyDetails,
   initializeUserProblems,
 } from "./problems.controller.js";
-import { getDiffieHellman } from "crypto";
+import { calculateDailyScores } from "./calcProbScores.js";
 dotenv.config();
 
 cloudinary.config({
@@ -53,7 +53,7 @@ const createUser = async (req, res) => {
 
     if (existingUser) {
       // await initializeUserProblems(existingUser.auth0Id);
-      
+      // await calculateDailyScores(sub);
       return res.status(409).json({
         message: "User already exists",
         user: existingUser,
@@ -76,7 +76,8 @@ const createUser = async (req, res) => {
     await initializeUserProblems(newUser.auth0Id);
     console.log("Userprob coll populated -> ", newUser.auth0Id)
     const difficultyDetails = await getDifficultyDetails(newUser.auth0Id);
-    console.log(difficultyDetails);
+    await calculateDailyScores(sub);
+    // console.log(difficultyDetails);
     // await getDifficultyDetails(newUser.auth0Id);
     res.status(201).json(newUser);
   } catch (e) {
@@ -89,8 +90,9 @@ const checkUser = async (req, res) => {
   const user = await User.findOne({ auth0Id: sub });
   if (user) {
     // await initializeUserProblems(user.auth0Id);
-    console.log("sub", sub)
     // await getDifficultyDetails(sub);
+    console.log("sub -> ", sub);
+    await calculateDailyScores(sub);
     return res.json({ message: "User already exists", user });
   }
   return res.json({ message: "User not found" });

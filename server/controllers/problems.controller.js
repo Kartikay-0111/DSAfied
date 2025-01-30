@@ -44,7 +44,7 @@ async function initializeUserProblems(auth0Id) {
 async function getDifficultyDetails(auth0Id) {
   try {
     const upbl = await UserProblem.findOne({ auth0Id });
-    console.log(upbl)
+    // console.log(upbl)
     const us = await User.findOne({ auth0Id });
     if (!upbl) {
       return null;
@@ -80,7 +80,6 @@ async function getDifficultyDetails(auth0Id) {
           // console.log(numeric_difference);
         })
     );
-    console.log();
     const updatedDoc = await upbl.save()
     
     return updatedDoc;
