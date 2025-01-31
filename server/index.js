@@ -12,6 +12,7 @@ import { Daily } from "./models/daily.js";
 import { Problem } from "./models/problem.js";
 import { User } from "./models/user.js";
 import potdRoutes from './routes/potd.routes.js';
+import interviewRoutes from './routes/interview.routes.js';
 import { calculateDailyScores } from "./controllers/calcProbScores.js";
 
 dotenv.config();
@@ -82,13 +83,6 @@ app.post("/api/check-solved", async (req, res) => {
   res.status(404).json({ solved: false });
 });
 
-app.use(jwtCheck);
-
-// Routes
-app.use("/api/users", userRoutes);
-app.use("/api/article", articleRoute);
-app.use("/api", problemRoutes);
-app.use("/api/problem", problemRoutes);
 app.use(jwtCheck);
 
 // Routes

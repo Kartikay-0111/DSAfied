@@ -1,7 +1,7 @@
 import { Daily } from '../models/daily.js';
 import { Problem } from '../models/problem.js';
 import { MCQ } from '../models/mcq.js';
-
+import { calculateDailyScores} from './calcProbScores.js';
 // Fetch 3 random problems for the day
 const getDailyProblems = async () => {
   const today = new Date(new Date().toISOString().split('T')[0]);
@@ -10,9 +10,10 @@ const getDailyProblems = async () => {
 
   if (!daily) {
     // Fetch 3 random problems from the Problems collection
-    const randomProblems = await Problem.aggregate([
-      { $sample: { size: 3 } }
-    ]);
+    // const randomProblems = await Problem.aggregate([
+    //   { $sample: { size: 3 } }
+    // ]);
+    const randomProblems = await calculateDailyScores();
 
     // Fetch 3 random MCQs from the MCQ collection
     const mcqsForDay = await MCQ.aggregate([

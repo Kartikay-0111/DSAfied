@@ -106,12 +106,6 @@ const getUserById = async (req, res) => {
   const user = await User.findOne({ auth0Id: id });
   res.json(user);
 };
-export { createUser, checkUser, getUserById };
-
-  // const { sub } = req.auth.payload;
-  const user = await User.findOne({auth0Id:id});
-  res.json(user);
-}
 
 const updateStreak = async (req, res) => {
   const { sub, mcqsSolved, problemsSolved } = req.body;

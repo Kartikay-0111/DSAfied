@@ -36,8 +36,9 @@ export const calculateDailyScores = async (auth0Id) => {
     }
   };
 
-  nightlyTask(auth0Id)
+  // nightlyTask(auth0Id)
 
   // Schedule the task to run every night at 11:59 PM
-  // cron.schedule("0 0 * * *", nightlyTask);
+  cron.schedule("0 0 * * *", nightlyTask);
 };
+
