@@ -1,10 +1,14 @@
-import { Router } from 'express';
-import { createUser } from '../controllers/user.controller.js';
+import { Router } from "express";
+import { getUser, getUserById, updateUser } from "../controllers/user.controller.js";
+
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({ status: 'Server is up and running!' });
-});
-router.post('/', createUser);
+// Fetch a user by ID
+// router.get("/:id", getUserById);
+
+// Update user profile
+router.put("/:id", updateUser);
+
+router.get("/", getUser);
 
 export default router;
