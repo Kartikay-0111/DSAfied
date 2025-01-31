@@ -1,3 +1,4 @@
+
 import express, { json } from "express";
 import * as dotenv from "dotenv";
 import path from "path";
@@ -10,6 +11,7 @@ import jwtCheck from "./middleware/jwtcheck.js";
 import { Daily } from "./models/daily.js";
 import { Problem } from "./models/problem.js";
 import { User } from "./models/user.js";
+import potdRoutes from './routes/potd.routes.js';
 import { calculateDailyScores } from "./controllers/calcProbScores.js";
 
 dotenv.config();
@@ -20,13 +22,12 @@ const PORT = process.env.PORT || 5000;
 //Middleware
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Frontend origin
-    credentials: true, // Allow credentials
-    allowedHeaders: ["Authorization", "Content-Type"], // Allow Authorization header
-  })
-);
+app.use(cors({
+  origin: 'http://localhost:5173',  // Frontend origin
+  credentials: true,  // Allow credentials
+  allowedHeaders: ['Authorization', 'Content-Type']  // Allow Authorization header
+
+}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
@@ -88,6 +89,15 @@ app.use("/api/users", userRoutes);
 app.use("/api/article", articleRoute);
 app.use("/api", problemRoutes);
 app.use("/api/problem", problemRoutes);
+app.use(jwtCheck);
+
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/article', articleRoute);
+app.use('/api', problemRoutes);
+app.use('/api/potd', potdRoutes);
+app.use('/api/problem', problemRoutes);
+app.use('/api/interview',interviewRoutes);
 
 // Start Server
 try {
@@ -98,3 +108,4 @@ try {
 } catch (err) {
   console.log(err);
 }
+

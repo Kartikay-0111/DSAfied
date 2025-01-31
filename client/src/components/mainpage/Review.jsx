@@ -2,41 +2,42 @@ import React, { useState, useEffect, useRef } from "react";
 
 const testimonials = [
   {
-    name: "John Martinez",
-    role: "Director, Trendsetters LLC",
+    name: "Aarav Mehta",
+    role: "Competitive Programmer",
     feedback:
-      "The financial management tools provided by Flike are unmatched. With detailed reports and easy-to-use features, my financial processes have never been smoother.",
+      "DSAfied’s personalized recommendations helped me ace coding interviews at top companies. The leaderboard keeps me motivated daily!",
     avatar: "https://via.placeholder.com/50",
   },
   {
-    name: "Jessica Patel",
-    role: "Freelance Consultant",
+    name: "Priya Sharma",
+    role: "Software Engineer at TechCorp",
     feedback:
-      "The real-time insights from Flike have been essential for my budgeting. Truly a fantastic tool for freelancers!",
+      "The adaptive learning paths on DSAfied made practicing DSA so much easier. I love how it tracks progress and suggests relevant problems.",
     avatar: "https://via.placeholder.com/50",
   },
   {
-    name: "Emily Johnson",
-    role: "Founder, The FTC Group",
+    name: "Rohan Patel",
+    role: "CS Student, VJTI",
     feedback:
-      "Flike has transformed the way we handle finances. The intuitive dashboard allows us to optimize our income streams effectively. Highly recommend!",
+      "DSAfied’s doubt-solving feature is a lifesaver! Getting help from peers on tough problems is seamless. Highly recommended for students.",
     avatar: "https://via.placeholder.com/50",
   },
   {
-    name: "Ryan Carter",
-    role: "Project Manager, BuildMore Inc.",
+    name: "Ananya Gupta",
+    role: "Tech Lead at InnovateHub",
     feedback:
-      "Flike’s collaboration features have improved our team’s financial workflow tremendously. Great tool for teams!",
+      "DSAfied has been instrumental in upskilling my team. The curated problem sets and tracking tools make it an invaluable resource for professionals.",
     avatar: "https://via.placeholder.com/50",
   },
   {
-    name: "Sophia Nguyen",
-    role: "CEO, TechSolutions",
+    name: "Kunal Verma",
+    role: "Final Year Student, IIT Delhi",
     feedback:
-      "The level of customization available in Flike is top-notch. It’s made managing finances so much easier for my team.",
+      "The discipline and consistency DSAfied enforces helped me secure an internship at a top tech company. Best platform for DSA practice!",
     avatar: "https://via.placeholder.com/50",
   },
 ];
+
 
 const Testimonials = () => {
   const scrollRef = useRef(null);

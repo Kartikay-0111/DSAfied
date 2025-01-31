@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
+import Loader from './Loader';
 
 const LoginCallback = () =>{
     const { handleRedirectCallback, user, getAccessTokenSilently } = useAuth0();
@@ -9,7 +10,7 @@ const LoginCallback = () =>{
    
     useEffect(() => {
         let isMounted = true;
-        console.log("LoginCallback");
+        // console.log("LoginCallback");
         const callback = async () =>{
           try{
               if (isMounted) {
@@ -25,7 +26,7 @@ const LoginCallback = () =>{
                   headers: { Authorization: `Bearer ${token}` }
                 }
               );
-        
+              console.log(response.data);
               if(response.data.message === "User already exists") navigate("/potd");
               else navigate("/onboard");
               }
@@ -38,10 +39,9 @@ const LoginCallback = () =>{
         return () => { isMounted = false };
 
     }, [handleRedirectCallback, navigate, getAccessTokenSilently]);
-    
-      
+
       return (
-          <h3 className="text-red-600">Loading...</h3>
+          <Loader />
       )
   }
   

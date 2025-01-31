@@ -2,29 +2,23 @@ import React from 'react';
 
 const NoteModal = ({ note, setNote, saveNote }) => {
   return (
-    <dialog id="my_modal_1" className="modal">
-      <div className="modal-box w-11/12 max-w-5xl">
-        <h3 className="font-bold text-lg">Add Note</h3>
-        <div className="modal-action flex flex-col">
-          <div className='w-full'>
-            <textarea 
-              id="note" 
-              className='h-28 w-full lg:w-10/12 p-2 resize-none' 
-              value={note} 
-              onChange={(e) => setNote(e.target.value)}
-            />
+    <dialog id="problem_note_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Add Note</h3>
+          <textarea
+            className="textarea textarea-bordered w-full h-48 mt-4"
+            placeholder="Add your notes here..."
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
+          <div className="modal-action">
+            <button className="btn btn-primary" onClick={saveNote}>Save</button>
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
           </div>
-          <form method="dialog" className='w-full'>
-            <button 
-              className="btn btn-secondary" 
-              onClick={saveNote}
-            >
-              Save
-            </button>
-          </form>
         </div>
-      </div>
-    </dialog>
+      </dialog>
   );
 };
 

@@ -1,60 +1,51 @@
 import React, { useState, useEffect } from 'react'
 import Login from '../login';
 import { useAuth0 } from '@auth0/auth0-react';
+import {NavLink} from 'react-router-dom';
 import LogoutBtn from '../logout';
 const Navbar = () => {
-    const {user, isAuthenticated, getAccessTokenSilently} = useAuth0();
+    const {user, isAuthenticated} = useAuth0();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    useEffect(() =>{
-        console.log("Navbar");
-        // const token = getAccessTokenSilently(
-        //     {
-        //         audience: 'http://localhost/',
-        //         scope: 'openid profile email offline_access',
-        //     }
-        // );
-        // console.log(token);
-
-        console.log(isAuthenticated);
-        console.log(user);
-    },[isAuthenticated, user])
+    // useEffect(() =>{
+    //     console.log(user);
+    // },[isAuthenticated, user])
     return (
         <div>
             <header className="bg-black sticky top-0 z-50 flex justify-center items-center">
                 <div className="container flex h-[70px] items-center justify-between gap-10 w-full lg:w-4/5 px-4 ">
-                    <a href="/">
+                    <NavLink to="/">
                         <div className="flex items-center gap-3">
                             <span className="text-lg font-bold">$</span>
                             <span className="font-heading text-xl font-semibold">DSAfied</span>
                         </div>
-                    </a>
+                    </NavLink>
                     <div className="flex items-center gap-4 duration-300 animate-in fade-in">
                         {/* Desktop Nav */}
                         <nav className="mr-5 hidden items-center justify-end gap-10 md:flex">
-                            <a
+                            <NavLink
                                 className="flex cursor-pointer items-center text-lg font-medium sm:text-sm"
-                                href="/features"
+                                to="/problemset"
                             >
-                                Features
-                            </a>
-                            <a
+                                Problemset
+                            </NavLink>
+                            <NavLink
                                 className="flex cursor-pointer items-center text-lg font-medium sm:text-sm"
-                                href="/community"
+                                to="/potd"
                             >
-                                Community
-                            </a>
-                            <a
+                                POTD
+                            </NavLink>
+                            <NavLink
                                 className="flex cursor-pointer items-center text-lg font-medium sm:text-sm"
-                                href="/roadmap"
+                                to="/IntervwCompo"
                             >
-                                Roadmap
-                            </a>
-                            <a
+                                Interview Prep
+                            </NavLink>
+                            <NavLink
                                 className="flex cursor-pointer items-center text-lg font-medium sm:text-sm"
-                                href="/pricing"
+                                to="/concept-of-the-day"
                             >
-                                Pricing
-                            </a>
+                                Today's Concept
+                            </NavLink>
                         </nav>
                         <div className="items-center gap-2 md:flex">
                             {/* <a
@@ -66,12 +57,12 @@ const Navbar = () => {
                             {!isAuthenticated? (
                             <>
                             <Login/>
-                            <a
+                            <NavLink
                                 className="inline-flex items-center justify-center gap-2 btn btn-outline btn-primary"
-                                href="/login"
+                                to="/login"
                             >
                                 Get Started
-                            </a>
+                            </NavLink>
                             </>):(
                             <>
                             <h3 className="text-pink">{user.name}</h3>
@@ -127,30 +118,30 @@ const Navbar = () => {
                 <div className="fixed inset-0 top-[70px] z-50 h-[calc(100vh-70px)] w-full overflow-auto md:hidden">
                     <div className="container rounded-b-lg bg-background bg-black text-foreground shadow-xl">
                         <nav className="flex flex-col gap-1 pt-2 ">
-                            <a
+                            <NavLink
                                 className="flex w-full cursor-pointer justify-center rounded-md p-2 font-medium"
-                                href="/features"
+                                to="/features"
                             >
                                 Features
-                            </a>
-                            <a
-                                href="/community"
+                            </NavLink>
+                            <NavLink
+                                to="/community"
                                 className="flex w-full cursor-pointer justify-center rounded-md p-2 font-medium"
                             >
                                 Community
-                            </a>
-                            <a
-                                href="/roadmap"
+                            </NavLink>
+                            <NavLink
+                                to="/roadmap"
                                 className="flex w-full cursor-pointer justify-center rounded-md p-2 font-medium"
                             >
                                 Roadmap
-                            </a>
-                            <a
+                            </NavLink>
+                            <NavLink
                                 className="flex w-full cursor-pointer justify-center rounded-md p-2 font-medium"
-                                href="/pricing"
+                                to="/pricing"
                             >
                                 Pricing
-                            </a>
+                            </NavLink>
                         </nav>
                     </div>
                 </div>
