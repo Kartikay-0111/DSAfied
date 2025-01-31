@@ -1,8 +1,15 @@
 import { Router } from "express";
-import { getUser, getUserById, updateUser } from "../controllers/user.controller.js";
+import { getUser, getUserById, updateUser,checkUser, getUserById } from "../controllers/user.controller.js";
 
-const router = Router();
+import multer from 'multer';
+const userRoutes = Router();
 
+const upload = multer({storage: multer.memoryStorage()});    //multer mdlware to store file and get form data *
+
+userRoutes.get('/', (req, res) => {
+  res.json({ status: 'Server is up and running!' });
+});
+userRoutes.post('/', upload.single("avatar"), createUser);
 // Fetch a user by ID
 // router.get("/:id", getUserById);
 
@@ -11,4 +18,5 @@ router.put("/:id", updateUser);
 
 router.get("/", getUser);
 
-export default router;
+userRoutes.post('/check-user', checkUser);
+export default userRoutes;
