@@ -102,14 +102,6 @@ const checkUser = async (req, res) => {
 
 }
 
-const getUserById = async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findOne({auth0Id:id});
-  res.json(user);
-}
-export { createUser, checkUser, getUserById };
-};
-
 // Update user profile
 export const updateUser = async (req, res) => {
   try {
@@ -149,3 +141,4 @@ export const getUser = async(req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 }
+export { createUser, checkUser,updateUser, getUser};

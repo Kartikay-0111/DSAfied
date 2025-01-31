@@ -78,8 +78,6 @@ app.use('/api/article', articleRoute);
 app.use('/api', problemRoutes);
 app.use('/api/problem', problemRoutes);
 
-
-
 // Start Server
 try{
     connectDB(process.env.MONGO_URI);
