@@ -1,12 +1,12 @@
 import React, { useState, useEffect} from "react";
-import { Code2, FileEdit, ExternalLink, ChevronDown } from "lucide-react";
-import TopicDropDown from "./dropdown";
+import { Code2, FileEdit, ExternalLink, ChevronDown, User } from "lucide-react";
 import { Card, CardContent } from "../problemset/ui-components";
+import UserProgressBar from "./ProgressBar";
 import {Search, BookmarkPlus, BookOpen, CheckCircle} from 'lucide-react';
 
 const IntervwCompo = () => {
   const [data, setData] = useState([]);
-  const [categories,setCategories] = useState([]);
+  const [solvedProblems, setSolvedProblems] = useState([]);
   const [openStep, setOpenStep] = useState(null);
   useEffect(() => {
     const fetchInterviewProblems = async () => {
@@ -18,7 +18,7 @@ const IntervwCompo = () => {
           }
         })
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setData(data);
       }
       catch{
@@ -29,6 +29,14 @@ const IntervwCompo = () => {
   const handleClickOutside = (e, dropdownRef) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       dropdownRef.current.querySelector('.dropdown-menu')?.classList.add('hidden');
+    }
+  };
+
+  const toggleProblemSolved = (problemId) => {
+    if (solvedProblems.includes(problemId)) {
+      setSolvedProblems(solvedProblems.filter(id => id !== problemId));
+    } else {
+      setSolvedProblems([...solvedProblems, problemId]);
     }
   };
 
@@ -80,7 +88,13 @@ const IntervwCompo = () => {
         </div>
       </div>
       </div>
+      <div className="w-full max-w-4xl mx-auto mb-8">
+        <p className="text-lg mb-2">Progress:</p>
+        <UserProgressBar totalProblems={191} solvedProblems={solvedProblems.length} />
+      </div>
+
       {/* interview problems dropdown */}
+      {(data.length !== 0) ? (
       <div className="w-3/4 mt-2 mx-auto max-w-4xl space-y-2">
       {data.map((step) => (
         <div key={step.step_no} className="rounded-lg overflow-hidden">
@@ -104,6 +118,8 @@ const IntervwCompo = () => {
                         <input
                           type="checkbox"
                           className="checkbox checkbox-accent"
+                          checked={solvedProblems.includes(problem.id)}
+                          onChange={() => toggleProblemSolved(problem.id)}
                         />
                         <div>
                           <h3 className="text-lg font-semibold text-white">
@@ -126,13 +142,6 @@ const IntervwCompo = () => {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        {/* <button
-                          className="p-2 rounded bg-pink-600 hover:bg-pink-700 transition-colors"
-                          aria-label="Bookmark"
-                        >
-                          <BookmarkPlus className="h-5 w-5 text-white" />
-                        </button> */}
-                        
                         <button
                           onClick={() => window.open(problem.lc_link, '_blank')}
                           className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition-colors"
@@ -149,6 +158,16 @@ const IntervwCompo = () => {
         </div>
       ))}
     </div>
+      ): (
+        <div className="w-3/4 mt-2 mx-auto max-w-4xl space-y-2">
+          <div className="flex items-center justify-center">
+            <div className="flex items-center gap-2">
+              <Search className="h-6 w-6" />
+              <span className="text-lg">Loading...</span>
+            </div>
+          </div>
+        </div>)
+      }
     </div>
 
   );
