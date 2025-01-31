@@ -5,6 +5,7 @@ import cors from 'cors';
 import userRoutes from './routes/user.routes.js';
 import articleRoute from './routes/article.routes.js';
 import problemRoutes from './routes/problem.routes.js';
+import interviewRoutes from './routes/interview.routes.js';
 import connectDB from './database/connect.js';
 import jwtCheck from './middleware/jwtcheck.js';
 import potdRoutes from './routes/potd.routes.js';
@@ -83,6 +84,7 @@ app.use('/api/article', articleRoute);
 app.use('/api', problemRoutes);
 app.use('/api/potd', potdRoutes);
 app.use('/api/problem', problemRoutes);
+app.use('/api/interview',interviewRoutes);
 
 // Start Server
 try {
