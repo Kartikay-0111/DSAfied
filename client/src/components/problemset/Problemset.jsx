@@ -1,4 +1,3 @@
-// components/ProblemsList/index.jsx
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, Menu } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -7,6 +6,7 @@ import ProblemsTable from './ProblemsTable';
 import SearchSort from './SearchSort';
 import PaginationControls from './PaginationControls';
 import NoteModal from './NoteModal';
+// import { set } from 'mongoose';
 
 const ProblemsList = () => {
   const [problems, setProblems] = useState([]);
@@ -26,38 +26,77 @@ const ProblemsList = () => {
   const { user, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    const fetchProblems = async () => {
-      const token = await getAccessTokenSilently();
-      try {
-        const response = await fetch(
-          `http://localhost:3000/api/problem?page=${currentPage}&limit=${problemsPerPage}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
+    if (user) {
+      const fetchProblems = async () => {
+        const token = await getAccessTokenSilently({
+          audience: 'http://localhost/',
+          scope: 'openid profile email offline_access'
+        });
+        try {
+          // Fetch user problems first
+          const userProblemsResponse = await fetch(
+            `http://localhost:3000/api/userproblem?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!userProblemsResponse.ok) {
+            throw new Error('User problems not found');
           }
-        );
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Problems not found');
+          const userProblemsData = await userProblemsResponse.json();
+          // Fetch problem details
+          const problemsResponse = await fetch(
+            `http://localhost:3000/api/problem?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!problemsResponse.ok) {
+            throw new Error('Problems not found');
+          }
+
+          const problemsData = await problemsResponse.json();
+
+          // Merge problems with user problems
+          const mergedProblems = problemsData.problems.map(problem => {
+            const userProblem = userProblemsData.problems.find(
+              up => up.id === problem._id || up.id === problem.id
+            );
+            return {
+              ...problem,
+              isSolved: userProblem ? userProblem.isSolved : false
+            };
+          });
+          // console.log(mergedProblems)
+          setProblems(mergedProblems);
+          setFilteredProblems(mergedProblems);
+          setTotalPages(userProblemsData.totalPages || 0);
+
+          // Initialize solved problems set
+          const solvedSet = new Set(mergedProblems.filter(problem => problem.isSolved).map(problem => problem._id));
+          setSolvedProblems(solvedSet);
+
+        } catch (error) {
+          console.error('Error fetching problems:', error.message);
         }
+      };
 
-        const data = await response.json();
-        // console.log(data);
-        setProblems(data.problems || []);
-        setFilteredProblems(data.problems || []);
-        setTotalPages(data.totalPages || 0); // Use totalPages from API response
-      } catch (error) {
-        console.error('Error fetching problems:', error.message);
-      }
-    };
-
-    fetchProblems();
-  }, [currentPage]);
-
+      fetchProblems();
+    }
+  }, [currentPage, user]);
+  // console.log(problems)
+  // console.log(userProblems)
   // Filter and sort problems
   useEffect(() => {
     let filtered = [...problems];
@@ -72,7 +111,6 @@ const ProblemsList = () => {
     // Apply topic filters
     if (selectedTopics.length > 0) {
       filtered = filtered.filter(problem => {
-        // Split topicTags into an array and trim each tag
         const topics = problem.topicTags.split(',').map(tag => tag.trim());
         return topics.some(tag => selectedTopics.includes(tag));
       });
@@ -111,22 +149,18 @@ const ProblemsList = () => {
     setFilteredProblems(filtered);
   }, [problems, searchQuery, selectedTopics, selectedDifficulties, selectedStatus, sortBy, solvedProblems]);
 
-  // Get all unique topics from problems
-  // const allTopics = [...new Set(problems.flatMap(p => p.topicTags))];
   const allTopics = [...new Set(
     problems.flatMap(problem => {
       problem.topicTags += ' ';
       return problem.topicTags.split(',').map(tag => tag.trim());
     })
   )];
-  // console.log(allTopics)
   const difficulties = ['Easy', 'Medium', 'Hard'];
 
   const handleSolvedToggle = (problemId) => {
     const toggleSolved = async () => {
       const token = await getAccessTokenSilently();
       const auth0Id = user.sub;
-      // console.log(token)
       try {
         const response = await fetch(`http://localhost:3000/api/problem/toggleSolved`, {
           method: "POST",
@@ -137,7 +171,6 @@ const ProblemsList = () => {
           body: JSON.stringify({
             auth0Id,
             problemId,
-            solved: !solvedProblems.has(problemId),
           }),
         });
 
@@ -145,6 +178,18 @@ const ProblemsList = () => {
           throw new Error("Failed");
         }
         const data = await response.json();
+
+        // Update the solved status in the problems list
+        setProblems(prevProblems =>
+          prevProblems.map(problem =>
+            problem._id === problemId ? { ...problem, isSolved: !problem.isSolved } : problem
+          )
+        );
+        setFilteredProblems(prevFilteredProblems =>
+          prevFilteredProblems.map(problem =>
+            problem._id === problemId ? { ...problem, isSolved: !problem.isSolved } : problem
+          )
+        );
       }
       catch (error) {
         console.error(error);
@@ -232,7 +277,7 @@ const ProblemsList = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white relative flex flex-row">
+    <div className="min-h-screen bg-slate-900 text-white relative flex flex-row">
       {/* Mobile Filter Toggle Button */}
       <button
         onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -243,10 +288,10 @@ const ProblemsList = () => {
 
       {/* Filters Sidebar - Responsive */}
       <div className={`
-        fixed inset-y-0 left-0 top-16 z-40 w-64 transform 
+        fixed h-screen inset-y-0 left-0 top-16 z-40 w-64 transform 
         ${isFilterOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 transition-transform duration-300 ease-in-out
-        bg-gray-900 p-4 overflow-y-auto
+        bg-gray-950 p-4 overflow-y-auto 
       `}>
         <FiltersPanel
           selectedTopics={selectedTopics}

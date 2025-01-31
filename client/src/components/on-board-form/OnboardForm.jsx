@@ -9,12 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 const OnboardForm = () => {
   const { user, getAccessTokenSilently } = useAuth0();
+  console.log(user);
   const [activeFormIndex, setActiveFormIndex] = useState(0);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     form1: {
       username: user?.name || "",
       Name: "",
+      email: user?.email || "",
       avatar: null,
     },
     form2: {
@@ -68,12 +70,13 @@ const OnboardForm = () => {
             Authorization: `Bearer ${token}`,
           }
         });
-
-      if (response.status === 200 || response.status === 201) {
+        console.log(user);
+        if (response.status === 200 || response.status === 201) {
         setFormData({
           form1: {
             username: user?.name || "",
             Name: "",
+            email: user?.email || "",
             avatar: null,
           },
           form2: {

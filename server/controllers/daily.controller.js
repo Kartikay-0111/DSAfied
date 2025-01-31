@@ -1,10 +1,10 @@
 import { Daily } from '../models/daily.js';
-import { Problem } from '../models/problem.js'; // Assuming Problems is the collection name
+import { Problem } from '../models/problem.js';
+import { MCQ } from '../models/mcq.js';
 
 // Fetch 3 random problems for the day
 const getDailyProblems = async () => {
   const today = new Date(new Date().toISOString().split('T')[0]);
-  // console.log(today);
 
   let daily = await Daily.findOne({ date: today });
 
@@ -14,29 +14,23 @@ const getDailyProblems = async () => {
       { $sample: { size: 3 } }
     ]);
 
-    // Determine the day of the week (0 = Sunday, 6 = Saturday)
-    const dayOfWeek = today.getDay();
-
-    // Fetch 5 MCQs for the current day of the week
-    const mcqsForDay = await Daily.aggregate([
-      { $unwind: "$mcqs" },
-      { $match: { "mcqs.day": dayOfWeek } },
-      { $sample: { size: 1 } }
+    // Fetch 3 random MCQs from the MCQ collection
+    const mcqsForDay = await MCQ.aggregate([
+      { $sample: { size: 3 } }
     ]);
 
-    // Create a new daily entry
     daily = await Daily.create({
       date: today,
       problems: randomProblems,
-      mcqs: mcqsForDay.map((mcq) => mcq.mcqs) // Extract only the MCQ objects
+      mcqs: mcqsForDay
     });
   }
-
+  console.log(daily);
   return daily;
 };
 
 // Get the MCQs and problems for the day
-async function getDailymcqs(req, res) {
+async function getDaily(req, res) {
   try {
     const daily = await getDailyProblems();
     if (!daily) {
@@ -49,4 +43,16 @@ async function getDailymcqs(req, res) {
   }
 }
 
-export { getDailymcqs };
+async function getMcq(req,res){
+  const id = req.params.id;
+  try{
+    const mcq = await MCQ.findById(id);
+    res.json(mcq);
+    res.status(200);
+    res.send();
+  }
+  catch(e){
+    res.status(404).json({message: e.message});
+  }
+}
+export { getDaily,getMcq};

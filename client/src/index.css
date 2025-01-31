@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  color: white;
+}
 * {
   font-family: "Lexend", sans-serif;
   /* color: white; */

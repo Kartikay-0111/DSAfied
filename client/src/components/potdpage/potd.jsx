@@ -8,14 +8,12 @@ import DailyProblems from './Problem';
 const POTD = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [problems, setProblems] = useState([]);
-  const [mcqs, setMcqs] = useState([]);
-  const { user,getAccessTokenSilently } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
   const [currentStreak, setCurrentStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
 
   const updateStreak = async (mcqsSolved, problemsSolved) => {
     const token = await getAccessTokenSilently();
-    // console.log(token);
     const sub = user.sub;
     try {
       await fetch('http://localhost:3000/api/users/updateStreak', {
@@ -24,7 +22,7 @@ const POTD = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({sub,mcqsSolved, problemsSolved }),
+        body: JSON.stringify({ sub, mcqsSolved, problemsSolved }),
       });
     } catch (error) {
       console.error('Error updating streak:', error);
@@ -42,7 +40,6 @@ const POTD = () => {
   useEffect(() => {
     const fetchDailyData = async () => {
       const token = await getAccessTokenSilently();
-      // console.log(token);
       try {
         const response = await fetch('http://localhost:3000/api/potd/problems', {
           method: 'GET',
@@ -50,49 +47,15 @@ const POTD = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           }
-        }); // Adjust this to match your API route
+        });
         const data = await response.json();
-        // console.log(data);
         setProblems(data.problems || []);
-        setMcqs(data.mcqs || []);
-        // console.log(data);
       } catch (error) {
         console.error('Error fetching daily data:', error);
       }
     };
     
     fetchDailyData();
-
-    // const intervalId = setInterval(() => {
-    //   const now = new Date();
-    //   if (now.getHours() === 0 && now.getMinutes() === 0) {
-    //   fetchDailyData();
-    //   }
-    // }, 60000); // Check every minute
-
-    // return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    const fetchStreakData = async () => {
-      const token = await getAccessTokenSilently();
-      try {
-        const response = await fetch('http://localhost:3000/api/users/streak', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          }
-        });
-        const data = await response.json();
-        setCurrentStreak(data.currentStreak);
-        setMaxStreak(data.maxStreak);
-      } catch (error) {
-        console.error('Error fetching streak data:', error);
-      }
-    };
-
-    fetchStreakData();
   }, [getAccessTokenSilently]);
 
   return (
@@ -108,7 +71,7 @@ const POTD = () => {
             <button className={`btn btn-outline rounded-full w-1/3 ${activeTab === 2 ? 'bg-blue-500 text-white' : ''}`} onClick={() => setActiveTab(2)}>MCQs</button>
           </div>
           <div className='flex flex-col justify-center'>
-            {activeTab === 1 ? <DailyProblems problemIds={problems} onSolve={() => handleSolve('problem')} /> : <MCQs mcqs={mcqs} onSolve={() => handleSolve('mcq')} />}
+            {activeTab === 1 ? <DailyProblems problemIds={problems} onSolve={() => handleSolve('problem')} /> : <MCQs onSolve={() => handleSolve('mcq')} />}
           </div>
         </div>
       </div>
@@ -120,7 +83,6 @@ const POTD = () => {
         <div className='flex flex-col items-center'>
           <p>Current Streak: {currentStreak} days</p>
           <p>Longest Streak: {maxStreak} days</p>
-          <button className='btn btn-info w-full mt-2'><a href="/concept-of-the-day">Concept of the Day</a></button>
         </div>
       </div>
     </div>

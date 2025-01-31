@@ -54,8 +54,8 @@ const Landing = () => {
       <main className='flex-1'>
         <section className='relative py-16 pt-28 sm:pb-16 bg-gradient-to-b from-black from-20% via-indigo-900 to-black' >
           <div className='container relative z-20 flex flex-col items-center gap-8 sm:gap-10'>
-            <h1 className='text-5xl text-center sm:text-6xl w-full sm:w-3/5'>Lorem ipsum dolor sit amet, consectetur</h1>
-            <p className='max-w-[33rem] text-center text-lg text-[#d4d8dd] sm:text-xl'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius, doloribus sit facere fugiat quia rem assumenda voluptatibus harum debitis maiores!</p>
+            <h1 className='text-5xl text-center sm:text-6xl w-full sm:w-3/5'>🚀 DSAfied – Master DSA with Discipline & Consistency!</h1>
+            <p className='max-w-[33rem] text-center text-lg text-[#d4d8dd] sm:text-xl'>Crack coding interviews with personalized DSA roadmaps, adaptive learning, and an active community.</p>
             <a
               className="inline-flex items-center justify-center gap-2 btn btn-accent btn-primary"
               href="/login"
@@ -84,14 +84,14 @@ const Landing = () => {
         </section>
         <section className='relative pt-20 pb-8 bg-black'>
           <div className='container flex flex-col items-center gap-10'>
-            <h2 className='max-w-3xl text-balance text-center font-heading text-3xl font-medium tracking-tighter sm:text-5xl'>Lorem ipsum dolor sit amet.</h2>
-            <p className='max-w-[50rem] text-balance text-center text-muted-foreground sm:text-wrap sm:text-lg mb-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis aliquid dignissimos dolorum praesentium omnis.</p>
+            <h2 className='max-w-3xl text-balance text-center font-heading text-3xl font-medium tracking-tighter sm:text-5xl'>You just have to be consistent!</h2>
+            <p className='max-w-[50rem] text-balance text-center text-muted-foreground sm:text-wrap sm:text-lg mb-6'>Crack coding interviews with personalized DSA roadmaps, adaptive learning, and an active community</p>
           </div>
           <div className="border-4 border-blue-400 bg-slate-900 p-8 rounded-3xl lg:w-3/5 lg:mx-auto m-8">
             {/* Tabs Header */}
             <div className="bg-slate-700 flex justify-center gap-6 mb-8 lg:w-3/6 rounded-full p-2 m-auto">
-              <button className={`btn btn-outline rounded-full w-1/4 ${activeTab === 1 ? 'bg-blue-500 text-white' : ''}`} onClick={() => { setActiveTab(1) }}>Solve</button>
-              <button className={`btn btn-outline rounded-full w-1/4 ${activeTab === 2 ? 'bg-blue-500 text-white' : ''}`} onClick={() => { setActiveTab(2) }}>Analyze</button>
+              <button className={`btn btn-outline rounded-full w-1/4 ${activeTab === 1 ? 'bg-blue-500 text-white' : ''}`} onClick={() => { setActiveTab(1) }}>Learn</button>
+              <button className={`btn btn-outline rounded-full w-1/4 ${activeTab === 2 ? 'bg-blue-500 text-white' : ''}`} onClick={() => { setActiveTab(2) }}>Solve</button>
               <button className={`btn btn-outline rounded-full w-1/4 ${activeTab === 3 ? 'bg-blue-500 text-white' : ''}`} onClick={() => { setActiveTab(3) }}>Achieve</button>
             </div>
             <div className='content'>
@@ -104,38 +104,39 @@ const Landing = () => {
         </div>
         <section className='relative pb-20 bg-black'>
           <div className='container flex flex-col items-center gap-10'>
-            <h2 className='max-w-3xl text-balance text-center font-heading text-3xl font-medium tracking-tighter sm:text-5xl'>Why choose DSAfied?</h2>
-            <p className='max-w-[50rem] text-balance text-center text-muted-foreground sm:text-wrap sm:text-lg mb-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis aliquid dignissimos dolorum praesentium omnis.</p>
+            <h2 className='max-w-3xl text-balance text-center font-heading text-3xl font-medium tracking-tighter sm:text-5xl'>Struggling with consistency in DSA? </h2>
+            <p className='max-w-[50rem] text-balance text-center text-muted-foreground sm:text-wrap sm:text-lg mb-6'>DSAfied helps you stay on track with personalized recommendations, adaptive learning paths, and leaderboard challenges. Whether you're a beginner or an advanced coder, our system ensures discipline, consistency, and expertise in problem-solving.</p>
           </div>
           <div className='container gap-10 grid lg:grid-rows-2 w-4/5 mx-auto'>
             <div className="card shadow-xl flex lg:flex-row gap-6">
               <div className="card-body basis-1/2 border-2 rounded-2xl bg-gradient-to-r from-blue-700 to-neutral-900">
-                <Aperture className="" />
-                <h2 className="card-title">Card title!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                {/* <Aperture className="" /> */}
+                <h2 className="card-title"> Personalized Learning Paths
+                </h2>
+                <p>🚀 Get customized problem recommendations based on your strengths and weaknesses. No more confusion about what to solve next!</p>
               </div>
               <div className="card-body basis-1/2 border-2 rounded-2xl bg-gradient-to-l from-blue-700 to-neutral-900">
-                <Aperture className="" />
-                <h2 className="card-title">Card title!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                {/* <Aperture className="" /> */}
+                <h2 className="card-title">Daily Streak & Progress Tracking</h2>
+                <p>🔥 Maintain consistency with daily practice streaks and see how you stack up against others on the leaderboard.</p>
               </div>
             </div>
 
             <div className="card shadow-xl flex lg:flex-row gap-6">
               <div className="card-body basis-1/3  border-2 rounded-2xl bg-gradient-to-tr from-blue-700 to-neutral-900">
-                <Aperture className="" />
-                <h2 className="card-title">Card title!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                {/* <Aperture className="" /> */}
+                <h2 className="card-title"> Adaptive Problem Solving</h2>
+                <p>🧠 As you solve problems, DSAfied dynamically adjusts the difficulty level, ensuring gradual improvement without burnout.</p>
               </div>
               <div className="card-body basis-1/3 border-2 rounded-2xl bg-gradient-to-b from-blue-700 to-neutral-900">
-                <Aperture className="" />
-                <h2 className="card-title">Card title!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                {/* <Aperture className="" /> */}
+                <h2 className="card-title"> Doubt Solving Community</h2>
+                <p>💡 Stuck on a problem? Ask your doubts in the dedicated discussion section and get help from peers & mentors.</p>
               </div>
               <div className="card-body basis-1/3 border-2 rounded-2xl bg-gradient-to-l from-blue-700 to-neutral-900">
-                <Aperture className="" />
-                <h2 className="card-title">Card title!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                {/* <Aperture className="" /> */}
+                <h2 className="card-title">No In-Built Editor – Focused Learning</h2>
+                <p>🔗 We link problems from LeetCode, Codeforces, and more, allowing you to practice on platforms you prefer.</p>
               </div>
             </div>
           </div>

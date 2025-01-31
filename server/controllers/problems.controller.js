@@ -72,6 +72,27 @@ async function getProblems(req, res) {
         return res.status(500).json({ message: error.message });
     }
 }
+async function getuserProblems(req, res) {
+    const { page = 1, limit = 10 } = req.query;
+    const { auth0Id } = req.query;
+    // console.log(auth0Id);
+    try {
+        const user = await UserProblem.find({auth0Id})
+        // console.log(user);
+        const totalProblems = user[0].problems.length;
+        const problems = user[0].problems.slice((page - 1) * limit, page * limit);
+        	// console.log(problems);
+        return res.status(200).json({
+            total: totalProblems,
+            totalPages: Math.ceil(totalProblems / limit),
+            currentPage: parseInt(page), // Ensure page is parsed as an integer
+            problems
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 
 const addNote = async (req, res) => {
     const { auth0Id, problemId, note } = req.body;
@@ -112,16 +133,19 @@ const getNote = async (req, res) => {
 
 const toggleSolved = async (req, res) => {
     const { auth0Id, problemId } = req.body;
+    // console.log(req.body);
     try {
         const userProblem = await UserProblem.findOne({ auth0Id });
         if (!userProblem) {
             return res.status(404).json({ message: "User problem not found" });
         }
         const problem = userProblem.problems.find(p => p.id.toString() === problemId);
+        console.log(problem);
         if (!problem) {
             return res.status(404).json({ message: "Problem not found" });
         }
-        problem.solvedstatus = !problem.solvedstatus;
+        problem.isSolved = !problem.isSolved;
+        console.log(problem);
         await userProblem.save();
         return res.status(200).json(userProblem);
     } catch (error) {
@@ -131,13 +155,14 @@ const toggleSolved = async (req, res) => {
 
 const getUserProblem = async (req, res) => {
     const { auth0Id, problemId } = req.query; // Use query parameters for GET request
-
+    // console.log(auth0Id,problemId);
     try {
         const userProblem = await UserProblem.findOne({ auth0Id });
         if (!userProblem) {
             return res.status(404).json({ message: "User problem not found" });
         }
         const problem = userProblem.problems.find(p => p.id.toString() === problemId);
+        // console.log(problem);
         if (!problem) {
             return res.status(404).json({ message: "Problem not found" });
         }
@@ -147,4 +172,4 @@ const getUserProblem = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
-export { getProblems ,addNote , getNote, initializeUserProblems,toggleSolved ,getProblem,getUserProblem};
+export { getProblems,getuserProblems ,addNote , getNote, initializeUserProblems,toggleSolved ,getProblem,getUserProblem};

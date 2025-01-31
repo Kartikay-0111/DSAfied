@@ -32,7 +32,8 @@ const Problem = ({ problemId, onSolve }) => {
                     }
                 );
                 const solvedData = await solvedResponse.json();
-                setIsSolved(solvedData.solved);
+                // console.log(solvedData);
+                setIsSolved(solvedData.isSolved);
             } catch (error) {
                 console.error("Error fetching problem data:", error);
             }
@@ -43,28 +44,42 @@ const Problem = ({ problemId, onSolve }) => {
     const handleSolvedToggle = async () => {
         const token = await getAccessTokenSilently();
         try {
-            const response = await fetch(`http://localhost:3000/api/problem/toggleSolved`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    auth0Id: user.sub,
-                    problemId,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to update solved status");
-            }
-
-            setIsSolved(!isSolved);
-            onSolve();
+          const response = await fetch(`http://localhost:3000/api/problem/toggleSolved`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              auth0Id: user.sub,
+              problemId,
+            }),
+          });
+      
+          if (!response.ok) {
+            throw new Error("Failed to update solved status");
+          }
+      
+          // Update the streak
+          await fetch(`http://localhost:3000/api/users/updateStreak`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              sub: user.sub,
+              mcqsSolved: 0,
+              problemsSolved: 1,
+            }),
+          });
+      
+          setIsSolved(!isSolved);
+          onSolve();
         } catch (error) {
-            console.error("Error toggling solved status:", error);
+          console.error("Error toggling solved status:", error);
         }
-    };
+      };
 
     const handleAddNote = async () => {
         await fetchNote();

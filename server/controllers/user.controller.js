@@ -18,9 +18,8 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: "User not authenticated" });
     }
     const {sub} = req.auth.payload;
-
     // const avatar = req.auth.payload.picture;
-    const {username, Name, platform, difficulty} = req.body;
+    const {username, Name,email, platform, difficulty} = req.body;
 
     //upload to cloudinary (using streams method)
     const photoUpload = await new Promise((resolve, reject) => {  
@@ -44,7 +43,7 @@ const createUser = async (req, res) => {
     // console.log(photoUrl);
 
     const platform_json = JSON.parse(platform);
-    console.log(platform_json);
+    // console.log(platform_json);
 
     let existingUser = await User.findOne({ auth0Id: sub });
 
@@ -60,6 +59,7 @@ const createUser = async (req, res) => {
         auth0Id: sub,
         username,
         Name,
+        email,
         avatar: photoUrl,
         platforms: platform_json,
         difficulty_pref: difficulty,
@@ -94,32 +94,25 @@ const getUserById = async (req, res) => {
 }
 
 const updateStreak = async (req, res) => {
-  // const { sub } = req.auth.payload;
-  const {sub, mcqsSolved, problemsSolved } = req.body;
+  const { sub, mcqsSolved, problemsSolved } = req.body;
 
   try {
-    const user = await User.findOneAndUpdate(
-      { auth0Id: sub },
-      {
-      $set: {
-        'potdStreak.$[elem].mcqsSolved': mcqsSolved,
-        'potdStreak.$[elem].problemsSolved': problemsSolved
-      }
-      },
-      {
-      arrayFilters: [{ 'elem.date': new Date().toISOString().split('T')[0] }],
-      new: true
-      }
-    );
-
+    const user = await User.findOne({ auth0Id: sub });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (!user.potdStreak.some(entry => entry.date.toISOString().split('T')[0] === new Date().toISOString().split('T')[0])) {
+    const today = new Date().toISOString().split('T')[0];
+    const streakEntry = user.potdStreak.find(entry => entry.date.toISOString().split('T')[0] === today);
+
+    if (streakEntry) {
+      streakEntry.mcqsSolved += mcqsSolved;
+      streakEntry.problemsSolved += problemsSolved;
+    } else {
       user.potdStreak.push({ date: new Date(), mcqsSolved, problemsSolved });
-      await user.save();
     }
+
+    await user.save();
     res.status(200).json(user);
   } catch (e) {
     res.status(500).json({ message: e.message });
@@ -173,4 +166,4 @@ const getStreak = async (req, res) => {
   });
 };
 
-export { createUser, checkUser, updateStreak ,getStreak,getUserByod};
+export { createUser, checkUser, updateStreak ,getStreak,getUserById};

@@ -10,11 +10,6 @@ const dailySchema = new mongoose.Schema({
     mcqs:[
         {
             mcqId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mcq' },
-            question: { type: String, required: true },
-            options: [String],
-            correct_option: { type: Number, required: true },
-            explanation: { type: String, required: true },
-            day: { type: Number, required: true }
         }
     ]
 });

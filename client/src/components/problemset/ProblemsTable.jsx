@@ -4,7 +4,6 @@ import { Card, CardContent } from './ui-components';
 
 const ProblemsTable = ({ 
   filteredProblems, 
-  solvedProblems, 
   handleSolvedToggle, 
   handleAddNote 
 }) => {
@@ -17,7 +16,7 @@ const ProblemsTable = ({
               <div className="flex items-center gap-4">
                 <input type="checkbox" 
                   className="checkbox checkbox-accent"
-                  checked={solvedProblems.has(problem._id)}
+                  checked={problem.isSolved}
                   onChange={() => handleSolvedToggle(problem._id)}
                 />
                 <div>
