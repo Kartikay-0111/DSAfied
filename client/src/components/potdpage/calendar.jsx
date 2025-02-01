@@ -7,12 +7,13 @@ const MonthlyStreakTracker = () => {
   const [currentMonth, setCurrentMonth] = useState(dayjs());
   const [streakData, setStreakData] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const fetchStreakData = async () => {
+
       const token = await getAccessTokenSilently();
       try {
-        const response = await fetch('/api/users/streak', {
+        const response = await fetch(`${BASE_URL}/api/users/streak`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,

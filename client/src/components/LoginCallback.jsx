@@ -7,7 +7,7 @@ import Loader from './Loader';
 const LoginCallback = () => {
   const { isAuthenticated, isLoading, user, handleRedirectCallback, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     let isMounted = true;
 
@@ -39,7 +39,7 @@ const LoginCallback = () => {
         });
 
         const response = await axios.post(
-          "/api/users/check-user",
+          `${BASE_URL}/api/users/check-user`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );

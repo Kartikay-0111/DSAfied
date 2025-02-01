@@ -11,12 +11,12 @@ const POTD = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const [currentStreak, setCurrentStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const updateStreak = async (mcqsSolved, problemsSolved) => {
     const token = await getAccessTokenSilently();
     const sub = user.sub;
     try {
-      await fetch('/api/users/updateStreak', {
+      await fetch(`${BASE_URL}/api/users/updateStreak`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const POTD = () => {
     const fetchDailyData = async () => {
       const token = await getAccessTokenSilently();
       try {
-        const response = await fetch('/api/potd/problems', {
+        const response = await fetch(`${BASE_URL}/api/potd/problems`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

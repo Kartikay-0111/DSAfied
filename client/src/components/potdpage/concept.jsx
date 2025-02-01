@@ -34,6 +34,7 @@ const TutorialComponent = () => {
   const [isMobileView, setIsMobileView] = useState(false);
   const [day, setDay] = useState(new Date().getDay());
   const [tutorialData, setTutorialData] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const { getAccessTokenSilently } = useAuth0();
   // Update day at midnight
   useEffect(() => {
@@ -49,7 +50,7 @@ const TutorialComponent = () => {
     const fetchArticle = async () => {
       const token = await getAccessTokenSilently();
       try {
-        const response = await fetch(`/api/article/${day}`,{
+        const response = await fetch(`${BASE_URL}/api/article/${day}`,{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

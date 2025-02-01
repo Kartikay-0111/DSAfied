@@ -10,6 +10,7 @@ const Profile = () => {
     const [error, setError] = useState(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [formData, setFormData] = useState(null);
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
     const logoPlatforms = {
         Leetcode: './leetcode-logo.png',
         Codeforces: './codeforces-logo.png',
@@ -32,7 +33,7 @@ const Profile = () => {
 
                 const token = await getAccessTokenSilently();
                 const response = await fetch(
-                    `/api/users/getUserById?id=${user.sub}`,
+                    `${BASE_URL}/api/users/getUserById?id=${user.sub}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ const Profile = () => {
         e.preventDefault();
         try {
             const token = await getAccessTokenSilently();
-            const response = await fetch('/api/users/updateUser', {
+            const response = await fetch(`${BASE_URL}/api/users/updateUser`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

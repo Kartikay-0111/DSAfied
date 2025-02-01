@@ -8,10 +8,11 @@ const IntervwCompo = () => {
   const [data, setData] = useState([]);
   const [solvedProblems, setSolvedProblems] = useState([]);
   const [openStep, setOpenStep] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const fetchInterviewProblems = async () => {
       try{
-        const response = await fetch("/api/interview",{
+        const response = await fetch(`${BASE_URL}/api/interview`,{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('token')

@@ -10,12 +10,12 @@ const MCQs = () => {
   const [submitted, setSubmitted] = useState([]);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const fetchMcqs = async () => {
       try {
         const token = await getAccessTokenSilently();
-        const response = await fetch("/api/potd/problems", {
+        const response = await fetch(`${BASE_URL}/api/potd/problems`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const MCQs = () => {
         console.log(data);
         const fetchedMcqs = await Promise.all(
           data.mcqs.map(async (mcq) => {
-            const res = await fetch(`/api/potd/mcq/${mcq._id}`, {
+            const res = await fetch(`${BASE_URL}/api/potd/mcq/${mcq._id}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const MCQs = () => {
   const calculateScore = async () => {
     const token = await getAccessTokenSilently();
     try {
-      await fetch("/api/users/updateStreak", {
+      await fetch(`${BASE_URL}/api/users/updateStreak`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

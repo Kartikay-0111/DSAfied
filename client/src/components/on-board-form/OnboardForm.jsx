@@ -8,6 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 const OnboardForm = () => {
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const { user, getAccessTokenSilently } = useAuth0();
   console.log(user);
   const [activeFormIndex, setActiveFormIndex] = useState(0);
@@ -64,7 +65,7 @@ const OnboardForm = () => {
         audience: 'http://localhost/',
         scope: 'openid profile email',
       });
-      const response = await axios.post("/api/users", data,
+      const response = await axios.post(`${BASE_URL}/api/users`, data,
         {
           headers: {
             Authorization: `Bearer ${token}`,
