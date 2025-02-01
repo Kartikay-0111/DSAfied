@@ -64,7 +64,7 @@ const OnboardForm = () => {
         audience: 'http://localhost/',
         scope: 'openid profile email',
       });
-      const response = await axios.post("http://localhost:3000/api/users", data,
+      const response = await axios.post("/api/users", data,
         {
           headers: {
             Authorization: `Bearer ${token}`,

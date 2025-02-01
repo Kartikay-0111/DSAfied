@@ -12,7 +12,7 @@ const MonthlyStreakTracker = () => {
     const fetchStreakData = async () => {
       const token = await getAccessTokenSilently();
       try {
-        const response = await fetch('http://localhost:3000/api/users/streak', {
+        const response = await fetch('/api/users/streak', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,

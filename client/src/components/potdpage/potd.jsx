@@ -16,7 +16,7 @@ const POTD = () => {
     const token = await getAccessTokenSilently();
     const sub = user.sub;
     try {
-      await fetch('http://localhost:3000/api/users/updateStreak', {
+      await fetch('/api/users/updateStreak', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const POTD = () => {
     const fetchDailyData = async () => {
       const token = await getAccessTokenSilently();
       try {
-        const response = await fetch('http://localhost:3000/api/potd/problems', {
+        const response = await fetch('/api/potd/problems', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

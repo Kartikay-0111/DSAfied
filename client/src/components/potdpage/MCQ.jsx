@@ -15,7 +15,7 @@ const MCQs = () => {
     const fetchMcqs = async () => {
       try {
         const token = await getAccessTokenSilently();
-        const response = await fetch("http://localhost:3000/api/potd/problems", {
+        const response = await fetch("/api/potd/problems", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const MCQs = () => {
         console.log(data);
         const fetchedMcqs = await Promise.all(
           data.mcqs.map(async (mcq) => {
-            const res = await fetch(`http://localhost:3000/api/potd/mcq/${mcq._id}`, {
+            const res = await fetch(`/api/potd/mcq/${mcq._id}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const MCQs = () => {
   const calculateScore = async () => {
     const token = await getAccessTokenSilently();
     try {
-      await fetch("http://localhost:3000/api/users/updateStreak", {
+      await fetch("/api/users/updateStreak", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -11,7 +11,7 @@ const IntervwCompo = () => {
   useEffect(() => {
     const fetchInterviewProblems = async () => {
       try{
-        const response = await fetch("http://localhost:3000/api/interview",{
+        const response = await fetch("/api/interview",{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('token')

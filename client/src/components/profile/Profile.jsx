@@ -32,7 +32,7 @@ const Profile = () => {
 
                 const token = await getAccessTokenSilently();
                 const response = await fetch(
-                    `http://localhost:3000/api/users/getUserById?id=${user.sub}`,
+                    `/api/users/getUserById?id=${user.sub}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const Profile = () => {
         e.preventDefault();
         try {
             const token = await getAccessTokenSilently();
-            const response = await fetch('http://localhost:3000/api/users/updateUser', {
+            const response = await fetch('/api/users/updateUser', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

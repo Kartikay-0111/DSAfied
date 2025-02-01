@@ -13,7 +13,7 @@ const Problem = ({ problemId, onSolve }) => {
             const token = await getAccessTokenSilently();
             try {
                 // Fetch problem details
-                const response = await fetch(`http://localhost:3000/api/problem/${problemId}`, {
+                const response = await fetch(`/api/problem/${problemId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
@@ -24,7 +24,7 @@ const Problem = ({ problemId, onSolve }) => {
 
                 // Fetch solved status
                 const solvedResponse = await fetch(
-                    `http://localhost:3000/api/userproblem/?auth0Id=${user.sub}&problemId=${problemId}`,
+                    `/api/userproblem/?auth0Id=${user.sub}&problemId=${problemId}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -44,7 +44,7 @@ const Problem = ({ problemId, onSolve }) => {
     const handleSolvedToggle = async () => {
         const token = await getAccessTokenSilently();
         try {
-          const response = await fetch(`http://localhost:3000/api/problem/toggleSolved`, {
+          const response = await fetch(`/api/problem/toggleSolved`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const Problem = ({ problemId, onSolve }) => {
           }
       
           // Update the streak
-          await fetch(`http://localhost:3000/api/users/updateStreak`, {
+          await fetch(`/api/users/updateStreak`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -90,7 +90,7 @@ const Problem = ({ problemId, onSolve }) => {
         const token = await getAccessTokenSilently();
         try {
             const response = await fetch(
-                `http://localhost:3000/api/problem/note?auth0Id=${user.sub}&problemId=${problemId}`,
+                `/api/problem/note?auth0Id=${user.sub}&problemId=${problemId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -118,7 +118,7 @@ const Problem = ({ problemId, onSolve }) => {
 
         const token = await getAccessTokenSilently();
         try {
-            const response = await fetch(`http://localhost:3000/api/problem/note`, {
+            const response = await fetch(`/api/problem/note`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

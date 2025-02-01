@@ -39,7 +39,7 @@ const LoginCallback = () => {
         });
 
         const response = await axios.post(
-          "http://localhost:3000/api/users/check-user",
+          "/api/users/check-user",
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );

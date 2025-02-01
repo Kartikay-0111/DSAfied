@@ -35,7 +35,7 @@ const ProblemsList = () => {
         try {
           // Fetch user problems first
           const userProblemsResponse = await fetch(
-            `http://localhost:3000/api/userproblem?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
+            `/api/userproblem?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
             {
               method: 'GET',
               headers: {
@@ -52,7 +52,7 @@ const ProblemsList = () => {
           const userProblemsData = await userProblemsResponse.json();
           // Fetch problem details
           const problemsResponse = await fetch(
-            `http://localhost:3000/api/problem?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
+            `/api/problem?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
             {
               method: 'GET',
               headers: {
@@ -162,7 +162,7 @@ const ProblemsList = () => {
       const token = await getAccessTokenSilently();
       const auth0Id = user.sub;
       try {
-        const response = await fetch(`http://localhost:3000/api/problem/toggleSolved`, {
+        const response = await fetch(`/api/problem/toggleSolved`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -223,7 +223,7 @@ const ProblemsList = () => {
     const auth0Id = user.sub;
     console.log(token)
     try {
-      const response = await fetch(`http://localhost:3000/api/problem/note`, {
+      const response = await fetch(`/api/problem/note`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -256,7 +256,7 @@ const ProblemsList = () => {
     const auth0Id = user.sub;
     // console.log(auth0Id, problemId);
     try {
-      const response = await fetch(`http://localhost:3000/api/problem/note?auth0Id=${auth0Id}&problemId=${problemId}`, {
+      const response = await fetch(`/api/problem/note?auth0Id=${auth0Id}&problemId=${problemId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

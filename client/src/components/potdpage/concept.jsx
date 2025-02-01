@@ -49,7 +49,7 @@ const TutorialComponent = () => {
     const fetchArticle = async () => {
       const token = await getAccessTokenSilently();
       try {
-        const response = await fetch(`http://localhost:3000/api/article/${day}`,{
+        const response = await fetch(`/api/article/${day}`,{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
