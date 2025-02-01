@@ -67,8 +67,8 @@ const POTD = () => {
         </div>
         <div className='flex flex-col justify-center'>
           <div className="flex justify-center gap-6 m-8 lg:w-3/6 sm:w-5/6 rounded-full p-2 mx-auto bg-white">
-            <button className={`btn btn-outline rounded-full w-1/3 ${activeTab === 1 ? 'bg-blue-500 text-white' : ''}`} onClick={() => setActiveTab(1)}>Code Problems</button>
-            <button className={`btn btn-outline rounded-full w-1/3 ${activeTab === 2 ? 'bg-blue-500 text-white' : ''}`} onClick={() => setActiveTab(2)}>MCQs</button>
+            <button className={`btn btn-outline rounded-full w-1/3 ${activeTab === 1 ? 'bg-blue-800 text-white' : 'text-black'}`} onClick={() => setActiveTab(1)}>Code Problems</button>
+            <button className={`btn btn-outline rounded-full w-1/3 ${activeTab === 2 ? 'bg-blue-800 text-white' : 'text-black'}`} onClick={() => setActiveTab(2)}>MCQs</button>
           </div>
           <div className='flex flex-col justify-center'>
             {activeTab === 1 ? <DailyProblems problemIds={problems} onSolve={() => handleSolve('problem')} /> : <MCQs onSolve={() => handleSolve('mcq')} />}

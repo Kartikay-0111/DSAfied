@@ -13,7 +13,7 @@ import { AuthProvider } from "./context/authcontext";
 import Problemset from "./components/problemset/Problemset";
 import { useAuth0 } from '@auth0/auth0-react';
 import Error from "./components/Error";
-// import { get } from "mongoose";
+import Profile from "./components/profile/Profile";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -30,9 +30,10 @@ function App() {
             <Route path="onboard" element={<OnboardForm />} />
             <Route path="concept-of-the-day" element={<Concept />} />
             <Route path='/IntervwCompo' element={<IntervwCompo />} />
+            <Route path="/problemset" element={<Problemset />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
           {/* <Route path="/problemset" element={<AllProblems />} /> */}
-          <Route path="/problemset" element={<Problemset />} />
           <Route path="*" element={<Error/>} />
         </Route>
       </>

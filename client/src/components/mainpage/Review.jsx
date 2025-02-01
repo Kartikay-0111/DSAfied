@@ -2,39 +2,39 @@ import React, { useState, useEffect, useRef } from "react";
 
 const testimonials = [
   {
-    name: "Aarav Mehta",
+    name: "Abhay Upadhyay",
     role: "Competitive Programmer",
     feedback:
       "DSAfied’s personalized recommendations helped me ace coding interviews at top companies. The leaderboard keeps me motivated daily!",
-    avatar: "https://via.placeholder.com/50",
+    avatar: "./avatar-659652_640.webp",
   },
   {
     name: "Priya Sharma",
     role: "Software Engineer at TechCorp",
     feedback:
       "The adaptive learning paths on DSAfied made practicing DSA so much easier. I love how it tracks progress and suggests relevant problems.",
-    avatar: "https://via.placeholder.com/50",
+    avatar: "./avatar-659652_640.webp",
   },
   {
-    name: "Rohan Patel",
+    name: "Siddhesh Pandey",
     role: "CS Student, VJTI",
     feedback:
       "DSAfied’s doubt-solving feature is a lifesaver! Getting help from peers on tough problems is seamless. Highly recommended for students.",
-    avatar: "https://via.placeholder.com/50",
+    avatar: "./avatar-659652_640.webp",
   },
   {
     name: "Ananya Gupta",
     role: "Tech Lead at InnovateHub",
     feedback:
       "DSAfied has been instrumental in upskilling my team. The curated problem sets and tracking tools make it an invaluable resource for professionals.",
-    avatar: "https://via.placeholder.com/50",
+    avatar: "./avatar-659652_640.webp",
   },
   {
     name: "Kunal Verma",
     role: "Final Year Student, IIT Delhi",
     feedback:
       "The discipline and consistency DSAfied enforces helped me secure an internship at a top tech company. Best platform for DSA practice!",
-    avatar: "https://via.placeholder.com/50",
+    avatar: "./avatar-659652_640.webp",
   },
 ];
 
@@ -75,7 +75,7 @@ const Testimonials = () => {
         {testimonials.concat(testimonials).map((testimonial, index) => (
           <div
             key={index}
-            className="min-w-[350px] max-w-[350px] p-4 bg-gradient-to-r from-blue-900 to-black rounded-lg shadow-lg flex-shrink-0"
+            className="min-w-[350px] max-w-[350px] p-4 bg-gradient-to-r from-blue-900 to-slate-950 rounded-lg shadow-lg flex-shrink-0"
           >
             <p className="text-gray-300 mb-4">{testimonial.feedback}</p>
             <div className="flex items-center">

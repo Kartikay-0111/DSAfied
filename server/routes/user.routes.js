@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser, checkUser, updateStreak, getStreak, getUserById } from '../controllers/user.controller.js';
+import { createUser, checkUser, updateStreak, getStreak, getUserById,updateUser } from '../controllers/user.controller.js';
 import multer from 'multer';
 const userRoutes = Router();
 
@@ -12,5 +12,6 @@ userRoutes.post('/', upload.single("avatar"), createUser);
 userRoutes.post('/check-user', checkUser);
 userRoutes.post('/updateStreak', updateStreak);
 userRoutes.get('/streak', getStreak);
-
+userRoutes.get('/getUserById', getUserById);
+userRoutes.put('/updateUser',updateUser);
 export default userRoutes;

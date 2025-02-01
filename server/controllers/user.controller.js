@@ -20,10 +20,10 @@ const createUser = async (req, res) => {
     if (!req.auth || !req.auth.payload) {
       return res.status(400).json({ message: "User not authenticated" });
     }
-  const {sub} = req.auth.payload;
+    const { sub } = req.auth.payload;
     // const avatar = req.auth.payload.picture;
     const { username, Name, email, platform, difficulty } = req.body;
-    
+
 
     //upload to cloudinary (using streams method)
     const photoUpload = await new Promise((resolve, reject) => {
@@ -62,16 +62,16 @@ const createUser = async (req, res) => {
 
     const newUser = new User({
 
-        auth0Id: sub,
-        username,
-        Name,
-        email,
-        avatar: photoUrl,
-        platforms: platform_json,
-        difficulty_pref: difficulty,
-        problems_solved: 0,
-        score: 0,
-        potdStreak: []
+      auth0Id: sub,
+      username,
+      Name,
+      email,
+      avatar: photoUrl,
+      platforms: platform_json,
+      difficulty_pref: difficulty,
+      problems_solved: 0,
+      score: 0,
+      potdStreak: []
     })
     await newUser.save();
     console.log("New user created inside User coll")
@@ -101,11 +101,46 @@ const checkUser = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const { id } = req.params;
-
-  const user = await User.findOne({ auth0Id: id });
-  res.json(user);
+  const id = req.query.id;
+  try {
+    const user = await User.findOne({ auth0Id: id });
+    // console.log("Database result:", user); // Log what the database returns
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (e) {
+    console.error("Error details:", e); // Log error details
+    res.status(500).json({ message: e.message });
+  }
 };
+
+const updateUser = async (req, res) => {
+  const { sub } = req.auth.payload;
+  // console.log(req.auth)
+  const { username, Name, email, platform, difficulty } = req.body;
+
+  try {
+    const user = await User.findOne({ auth0Id: sub });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.username = username;
+    user.Name = Name;
+    user.email = email;
+    user.platforms = typeof platform === "string" ? JSON.parse(platform) : platform;
+    user.difficulty_pref = difficulty;
+
+    await user.save();
+    res.status(200).json(user);
+  } catch (e) {
+    console.error("Update error:", e); // Debugging statement
+    res.status(500).json({ message: e.message });
+  }
+};
+
 
 const updateStreak = async (req, res) => {
   const { sub, mcqsSolved, problemsSolved } = req.body;
@@ -173,11 +208,11 @@ const getStreak = async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  res.json({ 
+  res.json({
     streak: user.potdStreak,
     currentStreak: getCurrentStreak(user.potdStreak),
     maxStreak: getMaxStreak(user.potdStreak)
   });
 };
 
-export { createUser, checkUser, updateStreak ,getStreak,getUserById};
+export { createUser, checkUser, updateStreak, getStreak, getUserById,updateUser };

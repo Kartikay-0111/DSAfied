@@ -149,7 +149,7 @@ const Problem = ({ problemId, onSolve }) => {
 
     return (
         <>
-            <div className="flex lg:flex-row flex-col p-6 rounded-md border border-orange-400 md:w-4/5 mx-auto w-full mb-2">
+            <div className="flex lg:flex-row flex-col p-6 rounded-md border bg-gray-800 md:w-4/5 mx-auto w-full mb-2">
                 <div className="flex items-center mr-3">
                     <button
                         onClick={handleSolvedToggle}

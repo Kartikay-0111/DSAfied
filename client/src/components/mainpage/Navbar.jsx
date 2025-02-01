@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Login from '../login';
 import { useAuth0 } from '@auth0/auth0-react';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import LogoutBtn from '../logout';
 const Navbar = () => {
-    const {user, isAuthenticated} = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     // useEffect(() =>{
     //     console.log(user);
@@ -14,8 +14,9 @@ const Navbar = () => {
             <header className="bg-black sticky top-0 z-50 flex justify-center items-center">
                 <div className="container flex h-[70px] items-center justify-between gap-10 w-full lg:w-4/5 px-4 ">
                     <NavLink to="/">
-                        <div className="flex items-center gap-3">
-                            <span className="text-lg font-bold">$</span>
+                        <div className="flex items-center gap-1">
+                            {/* <span className="text-lg font-bold">$</span> */}
+                            <img src='./infinity.png' className='h-8 w-12' />
                             <span className="font-heading text-xl font-semibold">DSAfied</span>
                         </div>
                     </NavLink>
@@ -54,20 +55,26 @@ const Navbar = () => {
                             >
                                 Log In
                             </a> */}
-                            {!isAuthenticated? (
-                            <>
-                            <Login/>
-                            <NavLink
-                                className="inline-flex items-center justify-center gap-2 btn btn-outline btn-primary"
-                                to="/login"
-                            >
-                                Get Started
-                            </NavLink>
-                            </>):(
-                            <>
-                            <h3 className="text-pink">{user.name}</h3>
-                            <LogoutBtn/>
-                            </>)}
+                            {!isAuthenticated ? (
+                                <>
+                                    <Login />
+                                    <NavLink
+                                        className="inline-flex items-center justify-center gap-2 btn btn-outline btn-primary"
+                                        to="/login"
+                                    >
+                                        Get Started
+                                    </NavLink>
+                                </>) : (
+                                <>
+                                     <div className="dropdown dropdown-end">
+                                        <div tabIndex={0} className="btn btn-info m-1">{user.name}
+                                        </div>
+                                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                                            <li><NavLink to="/profile">Profile</NavLink></li>
+                                            <li><LogoutBtn /></li>
+                                        </ul>
+                                    </div>
+                                </>)}
                         </div>
                         {/* Mobile Menu Toggle */}
                         <button
