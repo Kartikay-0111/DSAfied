@@ -24,7 +24,8 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use(cors({
-  origin: ['https://dsafied.vercel.app/','http://localhost:5173'],  // Frontend origin
+  origin: "https://dsafied.vercel.app",  // Frontend origin
+  methods: "GET,POST,PUT,DELETE",
   credentials: true,  // Allow credentials
   allowedHeaders: ['Authorization', 'Content-Type']  // Allow Authorization header
 }));
