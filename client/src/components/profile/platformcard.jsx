@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Platformcard = ({logo,problems,rating}) => {
-    console.log(logo)
+    // console.log(logo)
     return (
         <div className="flex items-center justify-center bg-base-200 p-4 rounded-lg space-x-4 w-full">
             {/* Left section */}

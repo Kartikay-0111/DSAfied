@@ -68,9 +68,9 @@ const Profile = () => {
         }
     }, [user, getAccessTokenSilently]);
 
-    if (userData) {
-        console.log(userData.platforms);
-    }
+    // if (userData) {
+    //     console.log(userData.platforms);
+    // }
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

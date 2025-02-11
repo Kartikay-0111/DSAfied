@@ -141,40 +141,13 @@ const updateUser = async (req, res) => {
   }
 };
 
-
-const updateStreak = async (req, res) => {
-  const { sub, mcqsSolved, problemsSolved } = req.body;
-
-  try {
-    const user = await User.findOne({ auth0Id: sub });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const today = new Date().toISOString().split('T')[0];
-    const streakEntry = user.potdStreak.find(entry => entry.date.toISOString().split('T')[0] === today);
-
-    if (streakEntry) {
-      streakEntry.mcqsSolved += mcqsSolved;
-      streakEntry.problemsSolved += problemsSolved;
-    } else {
-      user.potdStreak.push({ date: new Date(), mcqsSolved, problemsSolved });
-    }
-
-    await user.save();
-    res.status(200).json(user);
-  } catch (e) {
-    res.status(500).json({ message: e.message });
-  }
-};
-
 const getCurrentStreak = (streak) => {
   let currentStreak = 0;
   const today = new Date().toISOString().split('T')[0];
 
   for (let i = streak.length - 1; i >= 0; i--) {
     const date = streak[i].date.toISOString().split('T')[0];
-    if (date === today || new Date(date) < new Date(today)) {
+    if (date === today || new Date(date) === new Date(today)) {
       currentStreak++;
     } else {
       break;
@@ -215,4 +188,4 @@ const getStreak = async (req, res) => {
   });
 };
 
-export { createUser, checkUser, updateStreak, getStreak, getUserById,updateUser };
+export { createUser, checkUser,getStreak, getUserById,updateUser };

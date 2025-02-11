@@ -10,32 +10,9 @@ const POTD = () => {
   const [problems, setProblems] = useState([]);
   const { user, getAccessTokenSilently } = useAuth0();
   const [currentStreak, setCurrentStreak] = useState(0);
+  const [streakData, setStreakData] = useState([]);
   const [maxStreak, setMaxStreak] = useState(0);
   const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-  const updateStreak = async (mcqsSolved, problemsSolved) => {
-    const token = await getAccessTokenSilently();
-    const sub = user.sub;
-    try {
-      await fetch(`${BASE_URL}/api/users/updateStreak`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ sub, mcqsSolved, problemsSolved }),
-      });
-    } catch (error) {
-      console.error('Error updating streak:', error);
-    }
-  };
-
-  const handleSolve = (type) => {
-    if (type === 'mcq') {
-      updateStreak(1, 0);
-    } else if (type === 'problem') {
-      updateStreak(0, 1);
-    }
-  };
 
   useEffect(() => {
     const fetchDailyData = async () => {
@@ -54,10 +31,28 @@ const POTD = () => {
         console.error('Error fetching daily data:', error);
       }
     };
-    
+    const fetchStreakData = async () => {
+      const token = await getAccessTokenSilently();
+      try {
+        const response = await fetch(`${BASE_URL}/api/users/streak`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+        const data = await response.json();
+        // console.log(data);
+        setStreakData(data.streak || []);
+        setMaxStreak(data.maxStreak || 0);
+        setCurrentStreak(data.currentStreak || 0);
+      } catch (error) {
+        console.error('Error fetching streak data:', error);
+      }
+    };
+    fetchStreakData();
     fetchDailyData();
   }, [getAccessTokenSilently]);
-
+  // console.log(streakData);
   return (
     <div className='flex flex-col justify-center min-h-screen bg-slate-900 lg:flex-row'>
       <div className='basis-3/4'>
@@ -71,19 +66,20 @@ const POTD = () => {
             <button className={`btn btn-outline rounded-full w-1/3 ${activeTab === 2 ? 'bg-blue-800 text-white' : 'text-black'}`} onClick={() => setActiveTab(2)}>MCQs</button>
           </div>
           <div className='flex flex-col justify-center'>
-            {activeTab === 1 ? <DailyProblems problemIds={problems} onSolve={() => handleSolve('problem')} /> : <MCQs onSolve={() => handleSolve('mcq')} />}
+            {activeTab === 1 ? <DailyProblems problemIds={problems} /> : <MCQs />}
           </div>
         </div>
       </div>
       <div className="divider lg:divider-horizontal lg:divider-primary"></div>
       <div className='basis-1/4 flex flex-col align-center m-2'>
         <div className='mx-auto'>
-          <MonthlyStreakTracker />
+          <MonthlyStreakTracker streakData={streakData} />
         </div>
-        <div className='flex flex-col items-center'>
-          <p>Current Streak: {currentStreak} days</p>
-          <p>Longest Streak: {maxStreak} days</p>
+        <div className="flex mt-3 flex-col items-center bg-gradient-to-r from-purple-500 to-indigo-500 p-6 rounded-lg shadow-lg text-white">
+          <p className="text-xl font-semibold">🔥 Current Streak: <span className="font-bold text-yellow-300">{currentStreak}</span> days</p>
+          <p className="text-xl font-semibold mt-2">🏆 Longest Streak: <span className="font-bold text-green-300">{maxStreak}</span> days</p>
         </div>
+
       </div>
     </div>
   );

@@ -73,6 +73,7 @@ const mergeCPData = async (codeforcesUsername, codechefUsername, leetcodeUsernam
         fetchLeetCodeData(leetcodeUsername)
     ]);
 
+    // console.log(codeforcesData, codechefData, leetcodeData);
     const combinedHeatMap = {};
     let totalProblemsSolved = 0;
     const ratings = {};

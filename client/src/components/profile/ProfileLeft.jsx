@@ -1,18 +1,87 @@
-import { Bar } from "react-chartjs-2"
-import CalendarHeatmap from "react-calendar-heatmap"
-import "./heatmap.css"
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
-import Platformcard from "./platformcard"
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import Platformcard from "./platformcard";
+import { useState, useEffect } from "react";
+import RatingGraphs from "./Graphs";
+import { useAuth0 } from "@auth0/auth0-react";
+import mergeCPData from "./all_data";
+import Heatmap from "./Heatmap";
 
 // Register ChartJS components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 const logoPlatforms = {
     Leetcode: './leetcode-logo.png',
     Codeforces: './codeforces-logo.png',
     Codechef: './codechef-logo.svg',
     "Geeks for geeks": './gfg-logo.png',
 };
+
 const CodingDashboard = () => {
+    const { user, getAccessTokenSilently } = useAuth0();
+    const [ratingDataCF, setRatingDataCF] = useState([]);
+    const [userData, setUserData] = useState({});
+    const [ratingDataCC, setRatingDataCC] = useState([]);
+    const [heatmapData, setHeatmapData] = useState({});
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = await getAccessTokenSilently();
+            try {
+                const response = await fetch(`${BASE_URL}/api/users/getUserById?id=${user.sub}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                const userData = await response.json();
+                setUserData(userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, [getAccessTokenSilently, user.sub]);
+
+    useEffect(() => {
+        const fetchRatingData = async () => {
+            try {
+                if (userData.platforms && userData.platforms.Codeforces) {
+                    const responseCF = await fetch(`https://codeforces.com/api/user.rating?handle=${userData.platforms.Codeforces}`);
+                    const dataCF = await responseCF.json();
+                    setRatingDataCF(dataCF.result);
+                }
+
+                if (userData.platforms && userData.platforms.Codechef) {
+                    const responseCC = await fetch(`https://codechef-api.vercel.app/handle/${userData.platforms.Codechef}`);
+                    const dataCC = await responseCC.json();
+                    setRatingDataCC(dataCC.ratingData);
+                }
+            } catch (error) {
+                console.error('Error fetching rating data:', error);
+            }
+        };
+
+        fetchRatingData();
+    }, [userData]);
+
+    useEffect(() => {
+        const fetchMergedData = async () => {
+            if (userData.platforms) {
+                const mergedData = await mergeCPData(
+                    userData.platforms.Codeforces,
+                    userData.platforms.Codechef,
+                    userData.platforms.Leetcode
+                );
+                // console.log(mergedData.heatmap);
+                setHeatmapData(mergedData.heatmap);
+            }
+        };
+        fetchMergedData();
+    }, [userData]);
+
     // Activity data for bar chart
     const activityData = {
         labels: ["M", "T", "W", "T", "F", "Today", "S"],
@@ -20,11 +89,11 @@ const CodingDashboard = () => {
             {
                 label: "Problems Solved",
                 data: [1, 3, 4, 2, 3, 1, 0],
-                backgroundColor: ["#4338ca", "#4338ca", "#4338ca", "#4338ca", "#4338ca", "#f97316", "#4338ca",],
+                backgroundColor: ["#4338ca", "#4338ca", "#4338ca", "#4338ca", "#4338ca", "#f97316", "#4338ca"],
                 borderRadius: 6,
             },
         ],
-    }
+    };
 
     // Chart options
     const chartOptions = {
@@ -56,7 +125,7 @@ const CodingDashboard = () => {
                 display: false,
             },
         },
-    }
+    };
 
     // Progress data
     const topics = [
@@ -64,19 +133,7 @@ const CodingDashboard = () => {
         { name: "HashMap and Set", value: 90, progress: 70 },
         { name: "Trees", value: 85, progress: 60 },
         { name: "Algorithms", value: 75, progress: 50 },
-    ]
-
-    // Generate random data for heatmap
-    const today = new Date()
-    const heatmapValues = []
-    for (let i = 0; i < 49; i++) {
-        const date = new Date()
-        date.setDate(today.getDate() - i)
-        heatmapValues.push({
-            date: date.toISOString(),
-            count: Math.floor(Math.random() * 4),
-        })
-    }
+    ];
 
     return (
         <div className="min-h-screen bg-black p-6 space-y-6 rounded-xl">
@@ -114,7 +171,7 @@ const CodingDashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="stat bg-base-200 rounded-box">
                             <div className="stat-title">Total Questions</div>
-                            <div className="stat-value">124</div>
+                            <div className="stat-value">{userData.problems_solved}</div>
                         </div>
                         <div className="stat bg-base-200 rounded-box">
                             <div className="stat-title">Streak</div>
@@ -124,7 +181,7 @@ const CodingDashboard = () => {
                         <div className="stat bg-base-200 rounded-box relative overflow-hidden">
                             <div className="relative z-10">
                                 <div className="stat-title">DSAfied Score</div>
-                                <div className="stat-value text-warning">202</div>
+                                <div className="stat-value text-warning">{userData.score}</div>
                             </div>
                             <div className="absolute top-0 right-0 w-24 h-24 bg-warning opacity-20 rounded-bl-full"></div>
                         </div>
@@ -133,25 +190,12 @@ const CodingDashboard = () => {
             </div>
 
             {/* Activity Heatmap */}
-            <div className="card bg-base-200 shadow-xl">
-                <div className="card-body">
-                    <CalendarHeatmap
-                        values={heatmapValues}
-                        classForValue={(value) => {
-                            if (!value) return "color-empty"
-                            return `color-scale-${value.count}`
-                        }}
-                        startDate={new Date("2024-01-01")}
-                        endDate={new Date("2024-12-31")}
-                        tooltipDataAttrs={(value) => ({
-                            "data-tip": value.date ? `${value.date}: ${value.count} problems solved` : "No data",
-                        })}
-                    />
-                </div>
+            <div className="card bg-base-200 shadow-xl">    
+                <Heatmap data={heatmapData} />
             </div>
             <div className="flex flex-col gap-4">
                 <div className="basis-1/2 flex flex-row gap-4">
-                    <Platformcard logo={logoPlatforms.Leetcode} problems={234} rating={1443}/>
+                    <Platformcard logo={logoPlatforms.Leetcode} problems={234} rating={1443} />
                     <Platformcard logo={logoPlatforms.Codeforces} problems={93} rating={1176} />
                 </div>
                 <div className="basis-1/2 flex flex-row gap-4">
@@ -160,25 +204,30 @@ const CodingDashboard = () => {
                 </div>
             </div>
             {/* Progress Bars with Hover Effect */}
-            <div className="card bg-base-200 shadow-xl">
-                <div className="card-body space-y-4">
-                    {topics.map((topic, index) => (
-                        <div key={index} className="group">
-                            <div className="flex justify-between mb-2">
-                                <span className="opacity-60 group-hover:text-primary transition-colors">{topic.name}</span>
-                                <span className="group-hover:text-primary transition-colors">{topic.value}</span>
+            <div className="flex flex-row gap-4">
+                <div className="card bg-base-200 shadow-xl basis-1/3">
+                    <div className="card-body space-y-4">
+                        {topics.map((topic, index) => (
+                            <div key={index} className="group">
+                                <div className="flex justify-between mb-2">
+                                    <span className="opacity-60 group-hover:text-primary transition-colors">{topic.name}</span>
+                                    <span className="group-hover:text-primary transition-colors">{topic.value}</span>
+                                </div>
+                                <progress
+                                    className="progress progress-primary w-full group-hover:bg-primary/40 transition-all"
+                                    value={topic.progress}
+                                    max="100">
+                                </progress>
                             </div>
-                            <progress
-                                className="progress progress-primary w-full group-hover:bg-primary/40 transition-all"
-                                value={topic.progress}
-                                max="100">
-                            </progress>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                </div>
+                <div className="basis-2/3">
+                    <RatingGraphs codeforcesData={ratingDataCF} codechefData={ratingDataCC} />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default CodingDashboard
+export default CodingDashboard;

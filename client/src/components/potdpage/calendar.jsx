@@ -1,33 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
-import { useAuth0 } from '@auth0/auth0-react';
 import { CalendarDays } from "lucide-react";
 
-const MonthlyStreakTracker = () => {
+const MonthlyStreakTracker = ({ streakData }) => {
   const [currentMonth, setCurrentMonth] = useState(dayjs());
-  const [streakData, setStreakData] = useState([]);
-  const { getAccessTokenSilently } = useAuth0();
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-  useEffect(() => {
-    const fetchStreakData = async () => {
-
-      const token = await getAccessTokenSilently();
-      try {
-        const response = await fetch(`${BASE_URL}/api/users/streak`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          }
-        });
-        const data = await response.json();
-        setStreakData(data.potdStreak || []);
-      } catch (error) {
-        console.error('Error fetching streak data:', error);
-      }
-    };
-    fetchStreakData();
-  }, [getAccessTokenSilently]);
-
+  // console.log(streakData);
   const getDaysInMonth = () => {
     const startOfMonth = currentMonth.startOf("month");
     const endOfMonth = currentMonth.endOf("month");

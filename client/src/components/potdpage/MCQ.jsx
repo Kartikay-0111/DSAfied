@@ -23,7 +23,7 @@ const MCQs = () => {
           },
         });
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         const fetchedMcqs = await Promise.all(
           data.mcqs.map(async (mcq) => {
             const res = await fetch(`${BASE_URL}/api/potd/mcq/${mcq._id}`, {
@@ -37,6 +37,20 @@ const MCQs = () => {
           })
         );
 
+        const res = await fetch(`${BASE_URL}/api/users/getUserById?id=${user.sub}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const userData = await res.json();
+        const lastStreakDate = new Date(userData.potdStreak[userData.potdStreak.length - 1].date).toLocaleDateString("en-CA");
+        const currentDate = new Date().toLocaleDateString("en-CA");
+        
+        if (lastStreakDate === currentDate) {
+          setScore(userData.potdStreak[userData.potdStreak.length - 1].mcqsSolved);
+          setShowScore(true);
+        }
         setMcqs(fetchedMcqs);
         setSelectedOptions(Array(fetchedMcqs.length).fill(null));
         setSubmitted(Array(fetchedMcqs.length).fill(false));
@@ -44,7 +58,7 @@ const MCQs = () => {
         console.error("Error fetching MCQs:", error);
       }
     };
-    
+
     fetchMcqs();
   }, [getAccessTokenSilently]);
 
@@ -69,7 +83,7 @@ const MCQs = () => {
   const calculateScore = async () => {
     const token = await getAccessTokenSilently();
     try {
-      await fetch(`${BASE_URL}/api/users/updateStreak`, {
+      await fetch(`${BASE_URL}/api/potd/updatepotdStreak`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +92,6 @@ const MCQs = () => {
         body: JSON.stringify({
           sub: user.sub,
           mcqsSolved: score,
-          problemsSolved: 0,
         }),
       });
     } catch (error) {
@@ -183,8 +196,8 @@ const MCQs = () => {
                 )}
                 {currentIndex === mcqs.length - 1 && submitted.every((s) => s) && (
                   <div className="flex justify-center mt-8">
-                    <button 
-                      onClick={calculateScore} 
+                    <button
+                      onClick={calculateScore}
                       className="btn btn-primary btn-lg gap-2"
                     >
                       Complete Quiz <CheckCircle size={20} />

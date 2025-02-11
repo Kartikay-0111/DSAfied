@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BookmarkPlus, Check, X } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Problem = ({ problemId, onSolve }) => {
+const Problem = ({ problemId }) => {
     const [problem, setProblem] = useState(null);
     const [isSolved, setIsSolved] = useState(false);
     const [note, setNote] = useState("");
@@ -44,42 +44,40 @@ const Problem = ({ problemId, onSolve }) => {
     const handleSolvedToggle = async () => {
         const token = await getAccessTokenSilently();
         try {
-          const response = await fetch(`${BASE_URL}/api/problem/toggleSolved`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              auth0Id: user.sub,
-              problemId,
-            }),
-          });
-      
-          if (!response.ok) {
-            throw new Error("Failed to update solved status");
-          }
-      
-          // Update the streak
-          await fetch(`${BASE_URL}/api/users/updateStreak`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              sub: user.sub,
-              mcqsSolved: 0,
-              problemsSolved: 1,
-            }),
-          });
-      
-          setIsSolved(!isSolved);
-          onSolve();
+            const response = await fetch(`${BASE_URL}/api/problem/toggleSolved`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    auth0Id: user.sub,
+                    problemId,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to update solved status");
+            }
+
+            setIsSolved(!isSolved);
+
+            // Update POTD streak
+            await fetch(`${BASE_URL}/api/potd/updatepotdStreak`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    sub: user.sub,
+                    problemsSolved: isSolved ? -1 : 1,
+                }),
+            });
         } catch (error) {
-          console.error("Error toggling solved status:", error);
+            console.error("Error toggling solved status:", error);
         }
-      };
+    };
 
     const handleAddNote = async () => {
         await fetchNote();

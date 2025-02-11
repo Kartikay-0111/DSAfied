@@ -35,7 +35,7 @@ const ProblemsList = () => {
         try {
           // Fetch user problems first
           const userProblemsResponse = await fetch(
-            `${BASE_URL}/api/userproblem?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
+            `${BASE_URL}/api/userproblems?page=${currentPage}&limit=${problemsPerPage}&auth0Id=${user.sub}`,
             {
               method: 'GET',
               headers: {

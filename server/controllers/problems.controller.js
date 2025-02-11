@@ -190,12 +190,29 @@ async function getProblem(req, res) {
         return res.status(404).json({ message: "User problem not found" });
       }
       const problem = userProblem.problems.find(p => p.id.toString() === problemId);
-      console.log(problem);
+      // console.log(problem);
       if (!problem) {
         return res.status(404).json({ message: "Problem not found" });
       }
       problem.isSolved = !problem.isSolved;
-      console.log(problem);
+      const user = await User.findOne({ auth0Id });
+      const problemDetails = await Problem.findById(problemId);
+      const difficultyPoints = {
+        Easy: 30,
+        Medium: 50,
+        Hard: 100,
+      };
+      const points = difficultyPoints[problemDetails.difficulty];
+
+      if (!problem.isSolved) {
+        user.problems_solved -= 1;
+        user.score -= points;
+      } else {
+        user.problems_solved += 1;
+        user.score += points;
+      }
+      await user.save();
+      // console.log(problem);
       await userProblem.save();
       return res.status(200).json(userProblem);
     } catch (error) {

@@ -1,17 +1,23 @@
 import mongoose from "mongoose";
 
 const dailySchema = new mongoose.Schema({
-    date: { type: Date, required: true},
-    problems: [
+    auth0Id: { type: String, ref: 'User' },
+    daily: [
         {
-            problemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Problem' }
-        }
-    ],
-    mcqs:[
-        {
-            mcqId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mcq' },
+            date: { type: Date, required: true },
+            problems: [
+                {
+                    problemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Problem' }
+                }
+            ],
+            mcqs: [
+                {
+                    mcqId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mcq' },
+                }
+            ]
         }
     ]
+
 });
 
 export const Daily = mongoose.model('Daily', dailySchema);
